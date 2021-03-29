@@ -58,3 +58,7 @@
     * git checkout "전환할 브랜치 이름
 * 브랜치를 생성후 전환 할 때 
     * git checkout -b "브랜치 이름"
+* 원격저장소 브랜치 상태 확인
+    * git branch -r
+* 로컬저장소 브랜치 상태 확인
+    * git branch -a
