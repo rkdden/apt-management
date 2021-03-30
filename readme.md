@@ -3,36 +3,6 @@
 # 데이터베이스
 ## 관계도(ERD)
 ![erd](./images/erd.PNG)
-## 테이블
-* aptdongs
-    * id : primary key
-    * aptDong : 아파트 동수
-    * aptComplex : 아파트 단지이름
-* apthos
-    * id : primary key
-    * aptHo : 아파트 호수
-    * sensor : 센서 존재 여부(true, false)
-    * AptDongId : aptdongs 외래키
-* sensors
-    * id : primary key
-    * temperature : 온도
-    * humidity : 습도
-    * roomType : 방 종류
-    * electricity : 전기 사용량 (한 호당 모두 같게)
-    * createdAt : 생성시간
-    * AptHoId : apthos 외래키
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # 사용법

@@ -27,28 +27,28 @@ sequelize.sync({ force: true })
 
 // json설정
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 // 실험용
 app.post('/', async (req, res) => {
     // 동 생성
     // await AptDong.create({
-    //     aptDong: req.body.aptDong,
-    //     aptComplex: req.body.aptComplex,
-    // })
+    //     apt_dong: req.body.apt_dong,
+    //     apt_complex: req.body.apt_complex,
+    // });
     // 호 생성
     // await AptHo.create({
-    //     aptHo: req.body.aptHo,
+    //     apt_ho: req.body.apt_ho,
     //     sensor: req.body.sensor,
-    //     AptDongId: req.body.aptDongId,
+    //     apt_dong_id: req.body.apt_dong_id,
     // });
     // 센서 생성
     // await Sensor.create({
     //     temperature: req.body.temperature,
     //     humidity: req.body.humidity,
-    //     roomType: req.body.roomType,
+    //     room_type: req.body.roomType,
     //     electricity: req.body.electricity,
-    //     AptHoId: req.body.AptHoId,
+    //     apt_ho_id: req.body.apt_ho_id,
     // })
 });
 
