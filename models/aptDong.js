@@ -4,20 +4,21 @@ module.exports = class AptDong extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
             // 동
-            aptDong: {
+            apt_dong: {
                 type: Sequelize.STRING(20),
                 allowNull: false,
             },
             // 단지
-            aptComplex: {
+            apt_complex: {
                 type: Sequelize.STRING(30),
+                allowNull: false,
             },
         }, {
             sequelize,
             timestamps: false,
-            underscored: false,
+            underscored: true,
             modelName: 'AptDong',
-            tableName: 'aptDongs',
+            tableName: 'apt_dong',
             paranoid: false,
             charset: 'utf8',
             collate: 'utf8_general_ci',

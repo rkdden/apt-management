@@ -5,19 +5,19 @@ module.exports = class Sensor extends Sequelize.Model {
         return super.init({
             // 온도
             temperature: {
-                type: Sequelize.STRING(100),
+                type: Sequelize.STRING(30),
             },
             // 습도
             humidity: {
-                type: Sequelize.STRING(100),
+                type: Sequelize.STRING(30),
             },
             // 방 종류
-            roomType: {
+            room_type: {
                 type: Sequelize.STRING(20),
             },
             // 전력량
             electricity: {
-                type: Sequelize.STRING(100),
+                type: Sequelize.STRING(50),
             },
         }, {
             sequelize,
@@ -25,9 +25,9 @@ module.exports = class Sensor extends Sequelize.Model {
             timestamps: true,
             // 수정시간 삭제
             updatedAt: false,
-            underscored: false,
+            underscored: true,
             modelName: 'Sensor',
-            tableName: 'sensors',
+            tableName: 'sensor',
             // deleteAt 컬럼 추가 여부
             paranoid: false,
             charset: 'utf8',
@@ -35,6 +35,6 @@ module.exports = class Sensor extends Sequelize.Model {
         });
     }
     static associate(db) {
-        db.Sensor.belongsTo(db.AptHo, {foreignKey: 'aptHo'})// aptHo 1 : N : Sensor
+        db.Sensor.belongsTo(db.AptHo)// aptHo 1 : N : Sensor
     }
 };

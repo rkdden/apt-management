@@ -17,7 +17,7 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 
 // 시퀄라이즈 설정
-sequelize.sync({ force: false })
+sequelize.sync({ force: true })
     .then(() => {
         console.log('데이터베이스 연결 성공');
     })
@@ -27,13 +27,29 @@ sequelize.sync({ force: false })
 
 // json설정
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // 실험용
-app.get('/', async (req, res) => {
-    await AptDong.create({
-        aptDong: req.body.dong,
-        aptComplex: req.body.complex,
-    })
+app.post('/', async (req, res) => {
+    // 동 생성
+    // await AptDong.create({
+    //     apt_dong: req.body.apt_dong,
+    //     apt_complex: req.body.apt_complex,
+    // });
+    // 호 생성
+    // await AptHo.create({
+    //     apt_ho: req.body.apt_ho,
+    //     sensor: req.body.sensor,
+    //     apt_dong_id: req.body.apt_dong_id,
+    // });
+    // 센서 생성
+    // await Sensor.create({
+    //     temperature: req.body.temperature,
+    //     humidity: req.body.humidity,
+    //     room_type: req.body.roomType,
+    //     electricity: req.body.electricity,
+    //     apt_ho_id: req.body.apt_ho_id,
+    // })
 });
 
 app.listen(app.get('port'), () => {
