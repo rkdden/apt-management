@@ -27,7 +27,7 @@ sequelize.sync({ force: true })
 
 // json설정
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 
 // 실험용
 app.post('/', async (req, res) => {
