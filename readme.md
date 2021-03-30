@@ -3,7 +3,10 @@
 # 데이터베이스
 ## 관계도(ERD)
 ![erd](./images/erd.PNG)
-
+* apt_dong : apt_ho
+    * 1 : N
+* apt_ho : sensor
+    * 1: N
 
 # 사용법
 # 시퀄라이즈
