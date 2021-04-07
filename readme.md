@@ -4,9 +4,10 @@
 # 데이터베이스
 ## 관계도(ERD)
 ![erd](./images/erd.PNG)
-* apt_dong : apt_ho
-    * 1 : N
-* apt_ho : sensor
-    * 1: N
+<https://www.erdcloud.com/d/5frtGAuCpidojShxd>
 
 # REST
+
+
+# 개선점
+* config.json 파일 config.js로 바꾸자
