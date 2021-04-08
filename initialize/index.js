@@ -14,7 +14,7 @@ const port = config.comm.nodePort || 3000;
 
 const assertDatabaseConnectionOK = async () => {
     /**
-     * sequelize 관련 설정 추가.
+     * TODO - sequelize 관련 설정 추가.
      */
 };
 
@@ -24,8 +24,10 @@ const getConfig = () => {
 };
 
 const mqttMessage = async ()=>{
-    const mqtt = new MqttHandler();
+    const mqtt = new MqttHandler(config["mqtt"]["protocol"], config["mqtt"]["host"], config["mqtt"]["topic"], 2);
     mqtt.connect();
+    mqtt.sendMessage(config["mqtt"]["topic"], "test");
+
 }
 
 const initialize = async () => {

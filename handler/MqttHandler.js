@@ -1,48 +1,52 @@
 const mqtt = require('mqtt');
+const logger = require('../config/winston')('MqttHandler');
 
 /**
  * MqttHandler
  * ref https://medium.com/@cri.bh6/in-this-simple-example-im-going-to-show-how-to-write-a-very-simple-expressjs-api-that-uses-mqtt-to-57aa3ecdcd9e
  */
 class MqttHandler {
-    constructor() {
+    constructor(protocol, host, topic, qos) {
         this.mqttClient = null;
-        this.host = 'mqtt://mqtt-dashboard.com';
-        // this.username = 'YOUR_USER'; // mqtt credentials if these are needed to connect
-        // this.password = 'YOUR_PASSWORD';
+        this.host = host
+        this.protocol = protocol;
+        this.topic = topic;
+        this.qos = qos;
+        this.url = `${protocol}://${host}`;
+        logger.info(this.url);
     }
 
     connect() {
         // Connect mqtt with credentials (in case of needed, otherwise we can omit 2nd param)
-        this.mqttClient = mqtt.connect(this.host, /*{ username: this.username, password: this.password }*/ );
+        this.mqttClient = mqtt.connect(this.url, /*{ username: this.username, password: this.password }*/);
 
         // Mqtt error calback
         this.mqttClient.on('error', (err) => {
-            console.log(err);
+            logger.error(err);
             this.mqttClient.end();
         });
 
         // Connection callback
         this.mqttClient.on('connect', () => {
-            console.log(`mqtt client connected`);
+            logger.info(`mqtt client connected`);
         });
 
         // mqtt subscriptions
-        this.mqttClient.subscribe('sadang/data', {qos: 0});
+        this.mqttClient.subscribe(this.topic);
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', function (topic, message) {
-            console.log(message.toString());
+            logger.info(message.toString());
         });
 
         this.mqttClient.on('close', () => {
-            console.log(`mqtt client disconnected`);
+            logger.info(`mqtt client disconnected`);
         });
     }
 
     // Sends a mqtt message to topic: mytopic
-    sendMessage(message) {
-        this.mqttClient.publish('sadang/data', message);
+    sendMessage(topic, message) {
+        this.mqttClient.publish(topic, message);
     }
 }
 
