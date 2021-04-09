@@ -1,0 +1,24 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: 'http://localhost:3000'
+info:
+  description: |
+    apr-menagement
+  version: "0.0.1"
+  title: apr-menagement
+tags:
+  - name: common
+    description: 공통 기능
+paths:
+  /common/alive/server:
+    head:
+      tags:
+        - common
+      summary: check alive server
+      operationId: alive
+      description: |
+        해당 서비스가 작동여부 확인
+      responses:
+        '204':
+          description: Alive Server

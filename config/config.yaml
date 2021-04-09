@@ -1,0 +1,19 @@
+##config
+---
+context: "/"
+group: study
+project: apt-management
+development:
+  comm:
+    nodePort: 3000
+  mqtt:
+    protocol: "mqtt"
+    host: "mqtt-dashboard.com"
+    topic: "sadang/data"
+production:
+  comm:
+    nodePort: 3000
+  mqtt:
+    protocol: "mqtt"
+    host: "mqtt-dashboard.com"
+    topic: "sadang/data"
