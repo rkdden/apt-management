@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app"
+    "start": "nodemon app",
+    "test" : "mocha"
   },
   "author": "rkdden",
   "license": "ISC",

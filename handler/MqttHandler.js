@@ -11,6 +11,10 @@ class MqttHandler {
         this.host = host
         this.protocol = protocol;
         this.topic = topic;
+        /** 
+         * about qos 
+         * https://dalkomit.tistory.com/111 
+        */ 
         this.qos = qos;
         this.url = `${protocol}://${host}`;
         logger.info(this.url);
