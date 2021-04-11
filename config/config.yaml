@@ -10,7 +10,7 @@ development:
     protocol: "mqtt"
     host: "mqtt-dashboard.com"
     topic: "sadang/data"
-    # 데이터베이스
+  # 데이터베이스
   db:
     username: "root"
     password: "디비 비밀번호"
@@ -25,7 +25,7 @@ production:
     protocol: "mqtt"
     host: "mqtt-dashboard.com"
     topic: "sadang/data"
-    # 데이터베이스
+  # 데이터베이스
   db:
     username: "root"
     password: "데이터베이스 비밀번호"

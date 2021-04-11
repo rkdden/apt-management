@@ -13,14 +13,15 @@ describe("Mqtt Test", () => {
             setInterval(() => {
                 const data = {
                     number: 101,
-                    humidity: rand(30, 50),
                     temperature: rand(18, 38),
+                    humidity: rand(30, 50),
                     watt: rand(300, 400),
                 }
-                console.log(`send data = ${JSON.stringify(data)}`)
+                // console.log(`send data = ${JSON.stringify(data)}`)
                 mqttClient.publish("sadang/data", JSON.stringify(data));
             }, 3000)
 
+            
         } catch (e) {
             console.log(e)
         }
