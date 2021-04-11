@@ -12,17 +12,16 @@ const config = commConfig[process.env.NODE_ENV || "development"];
 const ip = internalIp.v4.sync();
 const port = config.comm.nodePort || 3000;
 
+
 const assertDatabaseConnectionOK = async () => {
-    /**
-     * TODO - sequelize 관련 설정 추가.
-     */
-     sequelize.sync({force: false})
-         .then(() => {
-             console.log('데이터베이스 연결됨');
-         })
-         .catch((err) => {
-             console.error(err);
-         });
+    // 시퀄라이즈 설정
+    sequelize.sync({force: false})
+    .then(() => {
+        console.log('데이터베이스 연결 성공');
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 };
 
 const getConfig = () => {

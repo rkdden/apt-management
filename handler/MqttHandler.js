@@ -1,8 +1,7 @@
 const mqtt = require('mqtt');
 
 const logger = require('../config/winston')('MqttHandler');
-const { Sensor } = require('../models');
-
+const { AptHo, Sensor } = require('../models');
 /**
  * MqttHandler
  * ref https://medium.com/@cri.bh6/in-this-simple-example-im-going-to-show-how-to-write-a-very-simple-expressjs-api-that-uses-mqtt-to-57aa3ecdcd9e
@@ -13,6 +12,10 @@ class MqttHandler {
         this.host = host
         this.protocol = protocol;
         this.topic = topic;
+        /** 
+         * about qos 
+         * https://dalkomit.tistory.com/111 
+        */ 
         this.qos = qos;
         this.url = `${protocol}://${host}`;
         logger.info(this.url);
@@ -37,16 +40,26 @@ class MqttHandler {
         this.mqttClient.subscribe(this.topic);
 
         // When a message arrives, console.log it
-        this.mqttClient.on('message',async function (topic, message) {
-            //logger.info(message.toString());
+        this.mqttClient.on('message', async function (topic, message) {
+            logger.info(message.toString());
             try {
-                if(message.toString() !== "test") {
-                    const stringbuf = message.toString('utf-8');
-                    const obj = JSON.parse(stringbuf);
-                    console.log(obj);
+                if (message.toString() !== 'test' || '') {
+                    const value = JSON.parse(message.toString('utf-8'))
+                    const hoId = await AptHo.findOne({
+                        where: {apt_ho: value.number}
+                    });
+                    await Sensor.create({
+                        temperature: value.temperature,
+                        humidity: value.humidity,
+                        room_type: "small",
+                        electricity: value.watt,
+                        AptHoId: hoId.id
+                    });
+                }else {
+                    console.log(message.toString());
                 }
-                
-            } catch(error) {
+            } catch (error) {
+                // 에러처리를 해야함
                 console.log(error);
             }
         });

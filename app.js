@@ -6,21 +6,7 @@ const { AptDong, AptHo } = require('./models');
 const router = require('./routes');
 dotenv.config();
 const app = express();
-//시퀄라이즈
-// const { sequelize } = require('./models');
-// const AptDong = require('./models/aptDong');
-// const AptHo = require('./models/aptHo');
-// const Sensor = require('./models/sensor');
-
-
-// 시퀄라이즈 설정
-// sequelize.sync({force: true})
-//     .then(() => {
-//         console.log('데이터베이스 연결 성공');
-//     })
-//     .catch((err) => {
-//         console.error(err);
-//     });
+const {AptDong, AptHo, Sensor} = require('./models');
 
 /**
  * initialize
@@ -36,7 +22,6 @@ app.use(`/api-docs`, swaggerUIServe, swaggerUiSetup(swaggerDoc));
 // 포트번호
 app.set('port', config.comm.nodePort || 3000);
 
-
 // json설정
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -47,6 +32,26 @@ app.use((req, res, next) => {
     next();
 });
 app.use(`/api/v1`, router);
+// app.post('/hi', async (req, res) => {
+//     try {
+//         // 동 만들기
+//         // await AptDong.create({
+//         //     apt_dong: req.body.apt_dong,
+//         //     apt_complex: req.body.apt_complex
+//         // })
+//         const dongId = await AptDong.findOne({ where: { id: 1}});
+//         // console.log(dongId.id);
+//         // 호 만들기
+//         await AptHo.create({
+//             apt_ho: req.body.apt_ho,
+//             sensor: true,
+//             AptDongId: dongId.id,
+//         });
+//         res.send("OK");
+//     } catch (error) {
+//         console.error(error);
+//     }
+// });
 
 app.post('/hi', async(req, res, next) => {
     try{
