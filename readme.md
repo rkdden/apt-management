@@ -7,7 +7,3 @@
 <https://www.erdcloud.com/d/5frtGAuCpidojShxd>
 
 # REST
-
-
-# 개선점
-* config.json 파일 config.js로 바꾸자

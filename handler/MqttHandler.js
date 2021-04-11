@@ -42,26 +42,7 @@ class MqttHandler {
         // When a message arrives, console.log it
         this.mqttClient.on('message', async function (topic, message) {
             logger.info(message.toString());
-            try {
-                if (message.toString() !== 'test' || '') {
-                    const value = JSON.parse(message.toString('utf-8'))
-                    const hoId = await AptHo.findOne({
-                        where: {apt_ho: value.number}
-                    });
-                    await Sensor.create({
-                        temperature: value.temperature,
-                        humidity: value.humidity,
-                        room_type: "small",
-                        electricity: value.watt,
-                        AptHoId: hoId.id
-                    });
-                }else {
-                    console.log(message.toString());
-                }
-            } catch (error) {
-                // 에러처리를 해야함
-                console.log(error);
-            }
+            
         });
 
         this.mqttClient.on('close', () => {
