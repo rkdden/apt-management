@@ -1,5 +1,7 @@
 const mqtt = require('mqtt');
+
 const logger = require('../config/winston')('MqttHandler');
+const { Sensor } = require('../models');
 
 /**
  * MqttHandler
@@ -35,8 +37,18 @@ class MqttHandler {
         this.mqttClient.subscribe(this.topic);
 
         // When a message arrives, console.log it
-        this.mqttClient.on('message', function (topic, message) {
-            logger.info(message.toString());
+        this.mqttClient.on('message',async function (topic, message) {
+            //logger.info(message.toString());
+            try {
+                if(message.toString() !== "test") {
+                    const stringbuf = message.toString('utf-8');
+                    const obj = JSON.parse(stringbuf);
+                    console.log(obj);
+                }
+                
+            } catch(error) {
+                console.log(error);
+            }
         });
 
         this.mqttClient.on('close', () => {

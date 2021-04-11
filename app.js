@@ -2,6 +2,7 @@ const express = require('express');
 const {initialize, config} = require('./initialize');
 const {swaggerConfig, swaggerUIServe, swaggerUiSetup} = require('./docs/swagger');
 const dotenv = require('dotenv');
+const { AptDong, AptHo } = require('./models');
 const router = require('./routes');
 dotenv.config();
 const app = express();
@@ -46,6 +47,25 @@ app.use((req, res, next) => {
     next();
 });
 app.use(`/api/v1`, router);
+
+app.post('/hi', async(req, res, next) => {
+    try{
+        // await AptDong.create({
+        //     apt_dong: req.body.dong,
+        //     apt_complex: req.body.complex,
+        // });
+        // await AptHo.create({
+        //     apt_ho: req.body.ho,
+        //     sensor: req.body.sensor,
+        //     AptDongId: req.body.dongId,
+        // });
+        // res.send("ok");
+        
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 app.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
