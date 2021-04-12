@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app",
-    "test" : "mocha"
+    "test": "mocha"
   },
   "author": "rkdden",
   "license": "ISC",
   "dependencies": {
+    "dateformat": "^4.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "internal-ip": "^6.2.0",

@@ -30,27 +30,9 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
     next();
 });
-app.use(`/api/v1`, router);
-// app.post('/hi', async (req, res) => {
-//     try {
-//         // 동 만들기
-//         // await AptDong.create({
-//         //     apt_dong: req.body.apt_dong,
-//         //     apt_complex: req.body.apt_complex
-//         // })
-//         const dongId = await AptDong.findOne({ where: { id: 1}});
-//         // console.log(dongId.id);
-//         // 호 만들기
-//         await AptHo.create({
-//             apt_ho: req.body.apt_ho,
-//             sensor: true,
-//             AptDongId: dongId.id,
-//         });
-//         res.send("OK");
-//     } catch (error) {
-//         console.error(error);
-//     }
-// });
+// app.use(`/api/v1`, router);
+app.use(`/`, router);
+
 
 app.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);

@@ -40,9 +40,11 @@ class MqttHandler {
         this.mqttClient.subscribe(this.topic);
 
         // When a message arrives, console.log it
-        this.mqttClient.on('message', async function (topic, message) {
+        this.mqttClient.on('message', function (topic, message) {
             logger.info(message.toString());
             const value = JSON.parse(message);
+            // 유효성 검사 예정
+            // console.log(typeof(value.temperature));
             sensorService.save(value);
         });
 
