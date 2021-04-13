@@ -11,10 +11,10 @@ module.exports = {
                 humidity: param.humidity,
                 room_type: "small",
                 electricity: param.watt,
-                AptHoId: value //fk
+                AptHoId: value.id
             });
         })).catch(e=>{
-
+            logger.info(e);
         });
     }
 }

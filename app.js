@@ -1,13 +1,16 @@
 const express = require('express');
+const session = require('express-session');
 const {initialize, config} = require('./initialize');
 const {swaggerConfig, swaggerUIServe, swaggerUiSetup} = require('./docs/swagger');
 const dotenv = require('dotenv');
-const { AptDong, AptHo } = require('./models');
+const passport = require('passport');
 const router = require('./routes');
 dotenv.config();
-const app = express();
-const {AptDong, AptHo, Sensor} = require('./models');
 
+const app = express();
+const passportConfig = require('./passport');
+
+passportConfig();
 /**
  * initialize
  */
@@ -31,6 +34,20 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
     next();
 });
+
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+    },
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(`/api/v1`, router);
 // app.post('/hi', async (req, res) => {
 //     try {
@@ -53,23 +70,6 @@ app.use(`/api/v1`, router);
 //     }
 // });
 
-app.post('/hi', async(req, res, next) => {
-    try{
-        // await AptDong.create({
-        //     apt_dong: req.body.dong,
-        //     apt_complex: req.body.complex,
-        // });
-        // await AptHo.create({
-        //     apt_ho: req.body.ho,
-        //     sensor: req.body.sensor,
-        //     AptDongId: req.body.dongId,
-        // });
-        // res.send("ok");
-        
-    } catch (error) {
-        console.log(error);
-    }
-});
 
 
 app.listen(app.get('port'), () => {
