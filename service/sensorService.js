@@ -9,7 +9,7 @@ module.exports = {
             Sensor.create({
                 temperature: param.temperature,
                 humidity: param.humidity,
-                room_type: "small",
+                room_type: param.roomType,
                 electricity: param.watt,
                 AptHoId: value.id
             });

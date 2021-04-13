@@ -13,6 +13,7 @@ describe("Mqtt Test", () => {
             setInterval(() => {
                 const data = {
                     number: 101,
+                    roomType: "small",
                     temperature: rand(18, 38),
                     humidity: rand(30, 50),
                     watt: rand(300, 400),
