@@ -1,5 +1,5 @@
 const express = require('express');
-const request = require('request');
+const axios = require('axios');
 const electricityController = require('./electricity.controller');
 const router = express.Router();
 
@@ -18,31 +18,23 @@ router.get('/message', (req, res) => {
     };
     
     // Javascript -> JSON 타입으로 변경
-    let template_objectStr = JSON.stringify(template_objectObj);
+    const template_objectStr = JSON.stringify(template_objectObj);
     
-    let options = {
-        url: 'https://kapi.kakao.com/v2/api/talk/memo/default/send',
-        method: 'POST',
-     
-        headers: {
-            'Authorization': 'Bearer ' + req.user,
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        form: {
-            template_object: template_objectStr,
-        }
-    };
-    //리퀘스트 모듈로 요청 보냄
-    function callback(error, response, body) {
-        console.log(response.statusCode);
-            if (!error && response.statusCode == 200) {
-                console.log(body);
-                res.send('success');
-            } else {
-                res.send('fail');
-            }
-    }
-    request(options, callback);
+    // axios 로 요청보냄
+    const accessToken = `Bearer ${req.user}`;
+    
+    axios.post('https://kapi.kakao.com/v2/api/talk/memo/default/send', `template_object= ${template_objectStr}`, {
+            headers: {
+                Authorization: accessToken,
+            }, 
+        })
+        .then((response)=> {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    
 });
 
 module.exports = router;
