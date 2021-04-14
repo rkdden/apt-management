@@ -10,6 +10,8 @@ info:
 tags:
   - name: common
     description: 공통 기능
+  - name: message
+    description: 카카오 메시지 전송 기능
 paths:
   /common/alive/server:
     head:
@@ -22,3 +24,14 @@ paths:
       responses:
         '204':
           description: Alive Server
+  /message/send:
+    post:
+      tags:
+        - message
+      summary: send kakao message
+      operationId: message
+      description: |
+        카카오 메시지 나에게 보내기
+      responses:
+        '204':
+          description: Success Send Message
