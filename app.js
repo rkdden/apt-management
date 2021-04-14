@@ -30,8 +30,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
     next();
 });
-// app.use(`/api/v1`, router);
-app.use(`/`, router);
+app.use(`/api/v1`, router);
 
 
 app.listen(app.get('port'), () => {

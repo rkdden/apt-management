@@ -10,12 +10,40 @@ info:
 tags:
   - name: common
     description: 공통 기능
+  - name: sensor
+    description: 센서 정보
 paths:
   /common/alive/server:
     head:
       tags:
         - common
       summary: check alive server
+      operationId: alive
+      description: |
+        해당 서비스가 작동여부 확인
+      responses:
+        '204':
+          description: Alive Server
+  /sensor/data:
+    post:
+      tags:
+        - sensor
+      summary: check sensor data
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                complex:
+                  type: string
+                dong:
+                  type: string
+                ho:
+                  type: string
+                timeValue:
+                  type: string
       operationId: alive
       description: |
         해당 서비스가 작동여부 확인
