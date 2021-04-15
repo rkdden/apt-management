@@ -32,6 +32,32 @@ exports.selectAll = async (req, res) => {
                 }
             }
         });
+        
+        // 달 별 습도 평균
+        // let now = new Date();
+        // console.log(now);
+        
+        // let { 
+        //     year = dateFormat(now, 'yyyy'),
+        //     month = dateFormat(now, 'mm'),
+        //     day = dateFormat(now, 'd'),
+        //     time, temperature, electricity, humidity, roomType} = req.body;
+        //     const enddate = Number.parseInt(month) + 1;
+        // const result = await Sensor.findAll({
+        //     where: {
+        //         created_at: {
+        //             [Op.between]: [dateFormat(`${year}-${month}-01 00:00:00`, 'yyyy-mm-dd HH:MM:ss'), dateFormat(`${year}-${enddate}-01 00:00:00`, 'yyyy-mm-dd HH:MM:ss')],                 
+        //             },
+        //     },
+        //     attributes: [ [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('humidity')), 2 ), 'sensoravg'] ],
+        //     order: [['created_at', 'DESC']]
+        // });
+
+        // 결과값 받아오기
+        // result.map(Sensor => {
+        //     console.log(Sensor.dataValues.sensoravg);
+        // });
+        
         res.json(result);
     } catch (error) {
         console.log(error);
