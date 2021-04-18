@@ -37,10 +37,10 @@ app.use((req, res, next) => {
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
-app.use(`/api/v1`, router);
 app.get('/', (req, res) => {
     res.render('./index.html')
 });
+app.use(`/api/v1`, router);
 
 server.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
@@ -49,7 +49,3 @@ server.listen(app.get('port'), () => {
 app.set('io', socket);
 socket.listen(server);
 
-// io.on('connection', function (socket) {
-//     const serverMessage = {message: "PING"}
-//     socket.emit("data", serverMessage)
-// })

@@ -37,8 +37,9 @@ class MqttHandler {
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', function (topic, message) {
-            logger.info(message.toString());
-            socket.emit("data", {message: "PING"})
+            // logger.info(message.toString());
+            const data= JSON.parse(message);
+            socket.emit("data", {message: data})
         });
 
         this.mqttClient.on('close', () => {
