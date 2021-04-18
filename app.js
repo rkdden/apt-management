@@ -9,6 +9,8 @@ dotenv.config();
 
 const app = express();
 const passportConfig = require('./passport');
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
 
 passportConfig();
 /**
@@ -48,8 +50,19 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(`/api/v1`, router);
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
 
-app.listen(app.get('port'), () => {
+app.use(`/api/v1`, router);
+app.get('/', (req, res) => {
+    res.render('./index.html')
+});
+
+server.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
+});
+
+io.on('connection', function (socket) {
+    const serverMessage = {message: "PING"}
+    socket.emit("data", serverMessage)
 });

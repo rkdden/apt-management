@@ -31,16 +31,8 @@ exports.selectAll = async (req, res) => {
             attributes: ['id' ,[sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('humidity')), 2 ), 'sensoravg'] ],
             order: [['created_at', 'DESC']]
         });
-        const user = req.user;
-        
-        const newjson = JSON.stringify(result);
-        console.dir(newjson.id);
-
-
-        
-
         //messageController.sendMessage({user, result});
-        //res.json({result});
+        res.json({result});
         // let now = new Date();
         // // timeValue에 필요한 일수별로 받아오기
         // const { complex = "1단", dong= "101", ho= "101", timeValue="1"} = req.body;
