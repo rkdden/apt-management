@@ -28,11 +28,20 @@ exports.selectAll = async (req, res) => {
                     [Op.between]: [dateFormat(`${year}-${month}-01 00:00:00`, 'yyyy-mm-dd HH:MM:ss'), dateFormat(`${year}-${enddate}-01 00:00:00`, 'yyyy-mm-dd HH:MM:ss')],                 
                     },
             },
-            attributes: ['id' ,[sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('humidity')), 2 ), 'sensoravg'] ],
+            attributes: [
+                [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('humidity')), 2 ), 'humidityavg'],
+                [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('temperature')), 2 ), 'temperatureavg'],
+                [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('electricity')), 2 ), 'electricityavg'],
+            ],
             order: [['created_at', 'DESC']]
         });
+        result.map(Sensor => {
+            console.log(Sensor.dataValues);
+            res.json({Sensor});
+        });
+        
         //messageController.sendMessage({user, result});
-        res.json({result});
+        
         // let now = new Date();
         // // timeValue에 필요한 일수별로 받아오기
         // const { complex = "1단", dong= "101", ho= "101", timeValue="1"} = req.body;
