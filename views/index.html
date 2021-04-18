@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/min/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>-->
+    <script src=”/socket.io/socket.io.js”></script>
+    <style>
+        .label {
+            display: inline-block;
+            text-align: right;
+            width: 90px;
+        }
+        .value {
+            display: inline-block;
+            text-align: left;
+            width: 60px;
+        }
+        .control {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
+    <div>
+        <span class="label">duration:</span>
+        <span id="durationValue" class="value">20000</span>
+        <span><input type="range" min="1000" max="60000" step="100" value="20000" id="duration" class="control"></span>
+    </div>
+    <div>
+        <span class="label">ttl:</span>
+        <span id="ttlValue" class="value">60000</span>
+        <span><input type="range" min="1000" max="60000" step="100" value="60000" id="ttl" class="control"></span>
+    </div>
+    <div>
+        <span class="label">refresh:</span>
+        <span id="refreshValue" class="value">1000</span>
+        <span><input type="range" min="50" max="3000" step="50" value="1000" id="refresh" class="control"></span>
+    </div>
+    <div>
+        <span class="label">delay:</span>
+        <span id="delayValue" class="value">2000</span>
+        <span><input type="range" min="0" max="5000" step="100" value="2000" id="delay" class="control"></span>
+    </div>
+    <div>
+        <span class="label">frameRate:</span>
+        <span id="frameRateValue" class="value">30</span>
+        <span><input type="range" min="1" max="60" step="1" value="30" id="frameRate" class="control"></span>
+    </div>
+    <div>
+        <span class="label">pause:</span>
+        <span id="pauseValue" class="value">false</span>
+        <span><input type="checkbox" id="pause" class="control"></span>
+    </div>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js" integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    var isIE = navigator.userAgent.indexOf('MSIE') !== -1 || navigator.userAgent.indexOf('Trident') !== -1;
+
+    var temperature = 0;
+    var humidity = 0;
+    var watt = 0;
+
+    var chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
+    };
+
+    function randomScalingFactor() {
+        return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+    }
+
+    function onRefresh(chart) {
+        value = 0;
+        chart.config.data.datasets.forEach(function(dataset) {
+            if (dataset.label == "Temperature") {
+                value = temperature;
+            } else if (dataset.label == "Humidity") {
+                value = humidity;
+            } else if (dataset.label == "Watt") {
+                value = watt;
+            }
+            dataset.data.push({
+                x: Date.now(),
+                y: value,
+            });
+        });
+    }
+
+    var color = Chart.helpers.color;
+    var config = {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'Temperature',
+                backgroundColor: color(chartColors.red).alpha(0.5).rgbString(),
+                borderColor: chartColors.red,
+                fill: false,
+                lineTension: 0,
+                borderDash: [8, 4],
+                data: []
+            }, {
+                label: 'Humidity',
+                backgroundColor: color(chartColors.blue).alpha(0.5).rgbString(),
+                borderColor: chartColors.blue,
+                fill: false,
+                cubicInterpolationMode: 'monotone',
+                data: []
+            }, {
+                label: 'Watt',
+                backgroundColor: color(chartColors.yellow).alpha(0.5).rgbString(),
+                borderColor: chartColors.yellow,
+                fill: false,
+                cubicInterpolationMode: 'monotone',
+                data: []
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Interactions sample'
+            },
+            scales: {
+                xAxes: [{
+                    type: 'realtime',
+                    realtime: {
+                        duration: 20000,
+                        ttl: 60000,
+                        refresh: 1000,
+                        delay: 2000,
+                        pause: false,
+                        onRefresh: onRefresh
+                    }
+                }],
+                yAxes: [{
+                    type: 'linear',
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'value'
+                    }
+                }]
+            },
+            tooltips: {
+                mode: 'nearest',
+                intersect: false
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: false
+            },
+            plugins: {
+                streaming: {
+                    frameRate: 30
+                }
+            }
+        }
+    };
+
+    window.onload = function() {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        window.myChart = new Chart(ctx, config);
+    };
+
+    document.getElementById('duration').addEventListener(isIE ? 'change' : 'input', function() {
+        config.options.scales.xAxes[0].realtime.duration = +this.value;
+        window.myChart.update({duration: 0});
+        document.getElementById('durationValue').innerHTML = this.value;
+    });
+
+    document.getElementById('ttl').addEventListener(isIE ? 'change' : 'input', function() {
+        config.options.scales.xAxes[0].realtime.ttl = +this.value;
+        window.myChart.update({duration: 0});
+        document.getElementById('ttlValue').innerHTML = this.value;
+    });
+
+    document.getElementById('refresh').addEventListener(isIE ? 'change' : 'input', function() {
+        config.options.scales.xAxes[0].realtime.refresh = +this.value;
+        window.myChart.update({duration: 0});
+        document.getElementById('refreshValue').innerHTML = this.value;
+    });
+
+    document.getElementById('delay').addEventListener(isIE ? 'change' : 'input', function() {
+        config.options.scales.xAxes[0].realtime.delay = +this.value;
+        window.myChart.update({duration: 0});
+        document.getElementById('delayValue').innerHTML = this.value;
+    });
+
+    document.getElementById('frameRate').addEventListener(isIE ? 'change' : 'input', function() {
+        config.options.plugins.streaming.frameRate = +this.value;
+        window.myChart.update({duration: 0});
+        document.getElementById('frameRateValue').innerHTML = this.value;
+    });
+
+    document.getElementById('pause').addEventListener('change', function() {
+        config.options.scales.xAxes[0].realtime.pause = this.checked;
+        window.myChart.update({duration: 0});
+        document.getElementById('pauseValue').innerHTML = this.checked;
+    });
+
+    // client = new Paho.MQTT.Client("mqtt-dashboard.com", 8000, "");
+    // client.onMessageArrived = onMessageArrived;
+    // client.connect({onSuccess:onConnect});
+
+    function onConnect() {
+        console.log("connected");
+        // client.subscribe("sadang/data");
+    }
+
+    function onMessageArrived(message) {
+        temperature = message.temperature;
+        humidity = message.humidity;
+        watt = message.watt;
+    }
+
+    const socket = io.connect({path: '/socket'})
+        socket.on('data', function (data) {
+            onMessageArrived(data.message);
+    });
+</script>
+</body>
+
+</html>
+

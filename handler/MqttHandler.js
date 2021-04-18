@@ -2,6 +2,8 @@ const mqtt = require('mqtt');
 const logger = require('../config/winston')('MqttHandler');
 const { AptHo, Sensor } = require('../models');
 const sensorService = require('../service/sensorService');
+const socket = require('../socket');
+
 /**
  * MqttHandler
  * ref https://medium.com/@cri.bh6/in-this-simple-example-im-going-to-show-how-to-write-a-very-simple-expressjs-api-that-uses-mqtt-to-57aa3ecdcd9e
@@ -46,6 +48,9 @@ class MqttHandler {
             // 유효성 검사 예정
             // console.log(typeof(value.temperature));
             sensorService.save(value);
+            // logger.info(message.toString());
+            const data= JSON.parse(message);
+            socket.emit("data", {message: data})
         });
 
         this.mqttClient.on('close', () => {

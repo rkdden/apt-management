@@ -5,7 +5,9 @@ const dotenv = require('dotenv');
 const router = require('./routes');
 dotenv.config();
 const app = express();
-const {AptDong, AptHo, Sensor} = require('./models');
+const server = require('http').createServer(app);
+const socket = require('./socket');
+
 
 /**
  * initialize
@@ -30,9 +32,19 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
     next();
 });
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+app.get('/', (req, res) => {
+    res.render('./index.html')
+});
 app.use(`/api/v1`, router);
 
-
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
 });
+
+app.set('io', socket);
+socket.listen(server);
+
