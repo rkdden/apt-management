@@ -1,5 +1,6 @@
 const mqtt = require('mqtt');
 const logger = require('../config/winston')('MqttHandler');
+const socket = require('../socket');
 
 /**
  * MqttHandler
@@ -37,6 +38,7 @@ class MqttHandler {
         // When a message arrives, console.log it
         this.mqttClient.on('message', function (topic, message) {
             logger.info(message.toString());
+            socket.emit("data", {message: "PING"})
         });
 
         this.mqttClient.on('close', () => {

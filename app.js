@@ -5,24 +5,9 @@ const dotenv = require('dotenv');
 const router = require('./routes');
 dotenv.config();
 const app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+const server = require('http').createServer(app);
+const socket = require('./socket');
 
-//시퀄라이즈
-// const { sequelize } = require('./models');
-// const AptDong = require('./models/aptDong');
-// const AptHo = require('./models/aptHo');
-// const Sensor = require('./models/sensor');
-
-
-// 시퀄라이즈 설정
-// sequelize.sync({force: true})
-//     .then(() => {
-//         console.log('데이터베이스 연결 성공');
-//     })
-//     .catch((err) => {
-//         console.error(err);
-//     });
 
 /**
  * initialize
@@ -61,7 +46,10 @@ server.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
 });
 
-io.on('connection', function (socket) {
-    const serverMessage = {message: "PING"}
-    socket.emit("data", serverMessage)
-})
+app.set('io', socket);
+socket.listen(server);
+
+// io.on('connection', function (socket) {
+//     const serverMessage = {message: "PING"}
+//     socket.emit("data", serverMessage)
+// })

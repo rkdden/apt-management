@@ -4,7 +4,6 @@ const fs = require('fs');
 const os = require('os');
 const internalIp = require('internal-ip');
 const MqttHandler = require('../handler/MqttHandler');
-// const {sequelize} = require('../models');
 const {colorize} = require('../utils/console');
 const logger = require('../config/winston')('initialize');
 const commConfig = yaml.load(fs.readFileSync(path.join(__dirname, "..", "config", "config.yaml"), 'utf8'));
@@ -26,7 +25,7 @@ const getConfig = () => {
 const mqttMessage = async ()=>{
     const mqtt = new MqttHandler(config["mqtt"]["protocol"], config["mqtt"]["host"], config["mqtt"]["topic"], 2);
     mqtt.connect();
-    mqtt.sendMessage(config["mqtt"]["topic"], "test");
+    // mqtt.sendMessage(config["mqtt"]["topic"], "test");
 
 }
 
