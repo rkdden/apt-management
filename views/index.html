@@ -7,7 +7,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>-->
+    <script src=”/socket.io/socket.io.js”></script>
     <style>
         .label {
             display: inline-block;
@@ -209,28 +210,24 @@
        document.getElementById('pauseValue').innerHTML = this.checked;
    });
 
-  client = new Paho.MQTT.Client("mqtt-dashboard.com", 8000, "");
-  client.onMessageArrived = onMessageArrived;
-  client.connect({onSuccess:onConnect}); 
+  // client = new Paho.MQTT.Client("mqtt-dashboard.com", 8000, "");
+  // client.onMessageArrived = onMessageArrived;
+  // client.connect({onSuccess:onConnect});
 
   function onConnect() {
       console.log("connected");
-      client.subscribe("sadang/data");
+      // client.subscribe("sadang/data");
   }
 
   function onMessageArrived(message) {
-      var result = message.payloadString;
-      var json =  JSON.parse(message.payloadString);
-      console.log(result);
-      console.log(json.humidity);
-      temperature = json.temperature;
-      humidity = json.humidity;
-      watt = json.watt;
+      temperature = message.temperature;
+      humidity = message.humidity;
+      watt = message.watt;
   }
 
-  const socket = io.connect()
+  const socket = io.connect({path: '/socket'})
       socket.on('data', function (data) {
-          console.log(data);
+          onMessageArrived(data.message);
   })
 </script>
 </body>

@@ -32,6 +32,8 @@ const getConfig = () => {
 const mqttMessage = async ()=>{
     const mqtt = new MqttHandler(config["mqtt"]["protocol"], config["mqtt"]["host"], config["mqtt"]["topic"], 0);
     mqtt.connect();
+    // mqtt.sendMessage(config["mqtt"]["topic"], "test");
+
 }
 
 const initialize = async () => {
