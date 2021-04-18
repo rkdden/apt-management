@@ -5,6 +5,9 @@ const dotenv = require('dotenv');
 const router = require('./routes');
 dotenv.config();
 const app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
 //시퀄라이즈
 // const { sequelize } = require('./models');
 // const AptDong = require('./models/aptDong');
@@ -45,8 +48,20 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Headers', 'content-type, x-access-token');
     next();
 });
-app.use(`/api/v1`, router);
 
-app.listen(app.get('port'), () => {
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+
+app.use(`/api/v1`, router);
+app.get('/', (req, res) => {
+    res.render('./index.html')
+});
+
+server.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
 });
+
+io.on('connection', function (socket) {
+    const serverMessage = {message: "PING"}
+    socket.emit("data", serverMessage)
+})
