@@ -49,7 +49,7 @@ class MqttHandler {
             // console.log(typeof(value.temperature));
             sensorService.save(value);
             // logger.info(message.toString());
-            const data= JSON.parse(message);
+            const data = JSON.parse(message);
             socket.emit("data", {message: data})
         });
 

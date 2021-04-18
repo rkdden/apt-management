@@ -4,12 +4,14 @@ servers:
     url: 'http://localhost:3000'
 info:
   description: |
-    apr-menagement
+    apt-menagement
   version: "0.0.1"
-  title: apr-menagement
+  title: apt-menagement
 tags:
   - name: common
     description: 공통 기능
+  - name: message
+    description: 카카오 메시지 전송 기능
   - name: sensor
     description: 센서 정보
 paths:
@@ -24,6 +26,17 @@ paths:
       responses:
         '204':
           description: Alive Server
+  /message/send:
+    post:
+      tags:
+        - message
+      summary: send kakao message
+      operationId: message
+      description: |
+        카카오 메시지 나에게 보내기
+      responses:
+        '204':
+          description: Success Send Message
   /sensor/data:
     post:
       tags:
