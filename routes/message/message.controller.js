@@ -10,7 +10,6 @@ module.exports = {
             
         });
         logger.info(electricity);
-   
     },
 
     sendMessage (req, res, param) {
