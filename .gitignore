@@ -436,3 +436,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# config.yaml 디비 비밀번호
+/config/config.yaml
+
+# vscode 환경설정
+.vscode

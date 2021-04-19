@@ -1,5 +1,7 @@
 const mqtt = require('mqtt');
 const logger = require('../config/winston')('MqttHandler');
+const { AptHo, Sensor } = require('../models');
+const sensorService = require('../service/sensorService');
 const socket = require('../socket');
 
 /**
@@ -12,6 +14,10 @@ class MqttHandler {
         this.host = host
         this.protocol = protocol;
         this.topic = topic;
+        /** 
+         * about qos 
+         * https://dalkomit.tistory.com/111 
+        */ 
         this.qos = qos;
         this.url = `${protocol}://${host}`;
         logger.info(this.url);
@@ -37,8 +43,13 @@ class MqttHandler {
 
         // When a message arrives, console.log it
         this.mqttClient.on('message', function (topic, message) {
+            logger.info(message.toString());
+            const value = JSON.parse(message);
+            // 유효성 검사 예정
+            // console.log(typeof(value.temperature));
+            sensorService.save(value);
             // logger.info(message.toString());
-            const data= JSON.parse(message);
+            const data = JSON.parse(message);
             socket.emit("data", {message: data})
         });
 

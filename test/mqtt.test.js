@@ -9,18 +9,22 @@ describe("Mqtt Test", () => {
     it("public topic", () => {
         try {
             const mqttClient = mqtt.connect("mqtt://mqtt-dashboard.com");
-
+            
             setInterval(() => {
                 const data = {
                     number: 101,
-                    humidity: rand(30, 50),
+                    roomType: "small",
                     temperature: rand(18, 38),
+                    humidity: rand(30, 50),
                     watt: rand(300, 400),
+                    roomtype: "small",
                 }
-                console.log(`send data = ${JSON.stringify(data)}`)
+                // console.log(`send data = ${JSON.stringify(data)}`)
                 mqttClient.publish("sadang/data", JSON.stringify(data));
-            }, 200)
+            }, 3000)
+            
 
+            
         } catch (e) {
             console.log(e)
         }

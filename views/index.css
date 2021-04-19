@@ -1,0 +1,26 @@
+.label {
+    display: inline-block;
+    text-align: right;
+    width: 90px;
+}
+
+.value {
+    display: inline-block;
+    text-align: left;
+    width: 60px;
+}
+
+.control {
+    width: 100px;
+}
+
+.myChart {
+    width: 1000px;
+    display: flex;
+
+}
+
+.barChart {
+    width: 1000px;
+    height: 500px;
+}
