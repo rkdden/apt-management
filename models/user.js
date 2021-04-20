@@ -12,6 +12,10 @@ module.exports = class User extends Sequelize.Model {
             uname: {
                 type: Sequelize.STRING(30),
                 allowNull: false,
+            }, 
+            accessToken: {
+                type: Sequelize.STRING(100),
+                allowNull: true,
             }
         }, {
             sequelize,
