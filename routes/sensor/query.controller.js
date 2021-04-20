@@ -8,7 +8,7 @@ const parseDate = (data) => {
     return dateAndTime.format(data, 'YYYY-MM-DD HH:mm:ss');
 }
 
-// 습도 온도 전력량 받기
+// 습도 온도 받기
 exports.hourQuery = async (dataType) => {
     const result = await Sensor.findAll({
         where: {
@@ -18,8 +18,6 @@ exports.hourQuery = async (dataType) => {
         },
         attributes: [
             [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col(`${dataType}`)), 2 ), `hour${dataType}avg`],
-            // [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('temperature')), 2 ), 'temperatureavg'],
-            // [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('electricity')), 2 ), 'electricityavg'],
         ],
         order: [['created_at', 'DESC']]
     });
@@ -55,3 +53,5 @@ exports.monthQuery = async (dataType) => {
     });
     return result;
 };
+
+exports.dayQuery
