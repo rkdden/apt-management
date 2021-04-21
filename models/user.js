@@ -3,8 +3,8 @@ const Sequelize = require('sequelize');
 module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         return super.init({
-            // 동
-            uid: {
+            // 카카오 이메일
+            uemail: {
                 type: Sequelize.STRING(100),
                 
                 allowNull: false,
