@@ -249,7 +249,7 @@
         };
 
         window.onload = function () {
-            axios.get('/api/v1/sensor/data')
+            axios.get('/sensor/data')
                 .then((response) => {
                     return barChartData(response.data.Sensor);
                     //return console.log(response.data.Sensor);
