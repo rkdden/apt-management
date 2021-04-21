@@ -25,7 +25,8 @@ module.exports = class AptHo extends Sequelize.Model {
         });
     }
     static associate(db) {
-        db.AptHo.belongsTo(db.AptDong); // aptDong 1 : N aptHo
-        db.AptHo.hasMany(db.Sensor); // aptHo 1 : N : Sensor
+        db.AptHo.belongsTo(db.AptDong, {foreignKey: 'apt_dong'}); // aptho N : 1 aptdong
+        db.AptHo.hasMany(db.Sensor, {foreignKey: 'apt_ho'}); // aptHo 1 : N : Sensor
+        db.AptHo.hasOne(db.User, {foreignKey: 'apt_ho'}); // aptho 1 : 1 user
     }
 };

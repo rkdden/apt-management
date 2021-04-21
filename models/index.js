@@ -12,6 +12,7 @@ const config = commConfig[process.env.NODE_ENV || "development"];
 const AptDong = require('./aptDong');
 const AptHo = require('./aptHo');
 const Sensor = require('./sensor');
+const User = require('./user');
 
 const db = {};
 
@@ -26,13 +27,17 @@ db.sequelize = sequelize;
 db.AptDong = AptDong;
 db.AptHo = AptHo;
 db.Sensor = Sensor;
+db.User = User;
+
 
 AptDong.init(sequelize);
 AptHo.init(sequelize);
 Sensor.init(sequelize);
+User.init(sequelize);
 
 AptDong.associate(db);
 AptHo.associate(db);
 Sensor.associate(db);
+User.associate(db);
 
 module.exports = db;
