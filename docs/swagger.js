@@ -15,8 +15,8 @@ module.exports = {
         const port = commConfig[NODE_ENV].comm.nodePort || 8080;
 
         const serversList = [
-            {url: `http://${internalIp.v4.sync()}:${port}/api/v1`},
-            {url: `http://127.0.0.1:${port}/api/v1`}
+            {url: `http://${internalIp.v4.sync()}:${port}`},
+            {url: `http://127.0.0.1:${port}`}
         ];
         console.log(serversList);
         swaggerConfig.servers = serversList;

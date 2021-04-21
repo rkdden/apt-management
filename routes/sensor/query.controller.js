@@ -53,5 +53,3 @@ exports.monthQuery = async (dataType) => {
     });
     return result;
 };
-
-exports.dayQuery

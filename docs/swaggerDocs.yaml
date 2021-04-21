@@ -32,8 +32,16 @@ paths:
       responses:
         '204':
           description: Alive Server
-  # 추가해야 할 것들
-  # 로그인 기본 페이지
+  /:
+    get:
+      tags:
+      - login
+      summary: redirect /login
+      description: |
+        로그인 페이지로 렌더링
+      responses:
+        "204":
+          description: redirect login page
   /login:
     get:
       tags:
