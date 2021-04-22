@@ -2,7 +2,7 @@
 const query = require('./query.controller');
 
 
-exports.selectAll = async (req, res) => {
+exports.mainData = async (req, res) => {
     try {
         let result = {};
         result.hour = {};
@@ -26,4 +26,7 @@ exports.selectAll = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+}
+exports.detailData = async (req, res) => {
+    // 달력 눌러서
 }

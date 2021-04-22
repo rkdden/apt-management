@@ -10,7 +10,7 @@ module.exports = () => {
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const exUser = await User.findOne({
-                where: { uemail: profile._json.kakao_account.email, },
+                where: { uemail: profile._json.kakao_account.email },
             });
             if (exUser) { // 카카오로 가입된 정보가 있을때
                 // 토큰을 업데이트 해준다.
@@ -19,7 +19,7 @@ module.exports = () => {
             } else { // 카카오로 가입된 정보가 없을때
                 // 새로운 사용자를 생성한다.
                 const newUser = await User.create({
-                    uemail: profile._json.kako_account.email,
+                    uemail: profile._json.kakao_account.email,
                     uname: profile.displayName,
                     accessToken,
                 });
