@@ -23,5 +23,7 @@ router.get('/kakao/callback', passport.authenticate('kakao', {
 });
 
 router.get('/userinfo', authController.getUserInfo);
+// 진행중
+router.patch('/userinfo', authController.patchUserInfo);
 
 module.exports = router;
