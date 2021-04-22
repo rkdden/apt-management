@@ -6,7 +6,7 @@ const { User } = require('../models');
 module.exports = () => {
     passport.use(new KakaoStrategy({
         clientID: process.env.KAKAO_ID, // 카카오 시크릿키
-        callbackURL: "http://localhost:3000/api/v1/auth/kakao/callback", // 카카오 콜백 URL
+        callbackURL: "http://localhost:3000/auth/kakao/callback", // 카카오 콜백 URL
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             const exUser = await User.findOne({
@@ -19,7 +19,7 @@ module.exports = () => {
             } else { // 카카오로 가입된 정보가 없을때
                 // 새로운 사용자를 생성한다.
                 const newUser = await User.create({
-                    uemail: profile._json.kakao_account.email,
+                    uemail: profile._json.kako_account.email,
                     uname: profile.displayName,
                     accessToken,
                 });

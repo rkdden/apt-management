@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/kakao', passport.authenticate('kakao'));
 
 router.get('/kakao/callback', passport.authenticate('kakao', {
-    failureRedirect: '/api/v1',
+    failureRedirect: '/login',
 }), async (req, res) => {
     const exUser = await User.findOne({
         where: {
@@ -16,7 +16,7 @@ router.get('/kakao/callback', passport.authenticate('kakao', {
         },
     });
     if(exUser.apt_ho === null) {
-        res.redirect('/api/v1/auth/userinfo');
+        res.redirect('/auth/userinfo');
     } else {
         res.redirect('/');
     }

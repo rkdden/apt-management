@@ -22,7 +22,7 @@ describe("Mqtt Test", () => {
                 }
                 // console.log(`send data = ${JSON.stringify(data)}`)
                 mqttClient.publish("sadang/data", JSON.stringify(data));
-            }, 3000)
+            }, 2000)
             
         } catch (e) {
             console.log(e)

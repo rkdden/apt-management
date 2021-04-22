@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const {initialize, config} = require('./initialize');
+const path = require('path');
 const {swaggerConfig, swaggerUIServe, swaggerUiSetup} = require('./docs/swagger');
 const dotenv = require('dotenv');
 const passport = require('passport');
@@ -31,6 +32,7 @@ app.set('port', config.comm.nodePort || 3000);
 
 // json설정
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.urlencoded({extended: false}));
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -55,10 +57,8 @@ app.use(passport.session());
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
-app.get('/', (req, res) => {
-    res.render('./index.html')
-});
-app.use(`/api/v1`, router);
+
+app.use(`/`, router);
 
 server.listen(app.get('port'), () => {
     console.log(`${app.get('port')}번 포트에서 서버 실행중`);
