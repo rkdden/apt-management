@@ -5,37 +5,56 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>사용자 선택 페이지</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
-
 <body>
+
     <h5>사용자 단지, 동, 호 업데이트 페이지</h5>
-        단지를 입력하세요 : <input type="text" name="complex" id="complex"></br>
-        동을 입력하세요 : <input type="text" name="dong" id="dong"></br>
-        호를 입력하세요 : <input type="text" name="ho" id="ho"></br>
-        <button id="infoSubmit">제출</button>
-    <script>
+
+        단지를 입력하세요 :
+        <select id="complex">
+            <option>단지 선택</option>
+            <% JSON.parse(aptComplex).forEach(function(complex){ %>
+                <option value="<%=complex.complex%>"><%= complex.complex %></option>
+            <% }); %>
+        </select>
+        동을 입력하세요 :
+        <select id="dong">
+            <option>동 선택</option>
+            <% JSON.parse(aptDong).forEach(function(dong){ %>
+                    <option value="<%=dong.dong%>"><%= dong.dong %></option>
+            <% }); %>
+        </select>
+        호를 입력하세요 :
+        <select id="ho">
+            <option>호 선택</option>
+            <% JSON.parse(aptHo).forEach(function(ho){ %>
+                <option value="<%= ho.ho %>"><%= ho.ho %></option>
+            <% }); %>
+        </select>
+    <!-- 호 -->
+
+
+</body>
+<script>
+    const infoSubmit = () => {
         const complex = document.getElementById('complex').value;
         const dong = document.getElementById('dong').value;
         const ho = document.getElementById('ho').value;
-        console.log(complex, dong, ho);
-        const infoSubmit = () => {
-            axios.patch('/auth/userinfo', {
-                complex,
-                dong,
-                ho
+        axios.patch('/auth/userinfo', {
+            complex,
+            dong,
+            ho
+        })
+            .then((response) => {
+                console.log(response.data);
+                return;
             })
-                .then((response) => {
-                    console.log(response.data);
-                    return;
-                })
-                .catch((error) => {
-                    return alert('Error');
-                });
-        };
-        document.getElementById('infoSubmit').addEventListener('click', infoSubmit);
-    </script>
-</body>
-
+            .catch((error) => {
+                return alert('Error');
+            });
+    };
+    document.getElementById('infoSubmit').addEventListener('click', infoSubmit);
+</script>
 </html>
