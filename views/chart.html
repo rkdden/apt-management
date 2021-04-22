@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
@@ -51,11 +52,22 @@
     </div>
 
 
-    <!-- 막대 그래프 -->
+    <!-- 막대 습도그래프  -->
     <div class="barChart">
-        <canvas id="barChart"></canvas>
+        <canvas id="humiditybarChart"></canvas>
         <!-- <button id="selectData">데어터 평균 보기</button> -->
     </div>
+    <!-- 막대  온도그래프-->
+    <div class="barChart">
+        <canvas id="temperaturebarChart"></canvas>
+        <!-- <button id="selectData">데어터 평균 보기</button> -->
+    </div>
+    <!-- 막대 전력그래프 -->
+    <div class="barChart">
+        <canvas id="wattbarChart"></canvas>
+        <!-- <button id="selectData">데어터 평균 보기</button> -->
+    </div>
+
     <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
         integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
         crossorigin="anonymous"></script>
@@ -170,97 +182,10 @@
             }
         };
 
-        function bar(Humidity, Temperature, Watt) {
-            const bar = document.getElementById('barChart');
-            const barChart = new Chart(bar, {
-                type: 'bar',
-                data: {
-                    labels: ["Sensor Data"],
-                    datasets: [
-                        {
-                            label: 'Temperature',
-                            data: [Temperature],
-                            backgroundColor: [
-                                color(chartColors.red).alpha(0.5).rgbString(),
-                            ],
-                            borderColor: [
-                                chartColors.red,
-                            ],
-                            borderWidth: 0
-                        },
-                        {
-                            label: 'Humidity',
-                            data: [Humidity],
-                            backgroundColor: [
-                                color(chartColors.blue).alpha(0.5).rgbString(),
-                            ],
-                            borderColor: [
-                                chartColors.blue,
-                            ],
-                            borderWidth: 0
-                        },
-                        {
-                            label: 'Watt',
-                            data: [Watt],
-                            backgroundColor: [
-                                color(chartColors.yellow).alpha(0.5).rgbString(),
-                            ],
-                            borderColor: [
-                                chartColors.yellow,
-                            ],
-                            borderWidth: 3
-                        }
-                    ]
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: 'Interactions sample'
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-
-                            },
-                        }]
-                    }
-                }
-
-            });
-        }
-
-        // const selectData = () => {
-        //     axios.get('/api/v1/sensor/data')
-        //         .then((response) => {
-        //             location.reload();
-        //             return console.log(response.data.result);
-        //         })
-        //         .catch((error) => {
-        //             return alert('Error');
-        //         });
-        // };
-
-        const barChartData = (data) => {
-            const Humidity = data.humidityavg;
-            const Temperature = data.temperatureavg;
-            const Watt = data.electricityavg;
-            return bar(Humidity, Temperature, Watt);
-        };
-
         window.onload = function () {
-            axios.get('/sensor/data')
-                .then((response) => {
-                    return barChartData(response.data.Sensor);
-                    //return console.log(response.data.Sensor);
-                })
-                .catch((error) => {
-                    return alert(error);
-                });
             //document.getElementById('selectData').addEventListener('click', selsetData);
             var ctx = document.getElementById('myChart').getContext('2d');
             window.myChart = new Chart(ctx, config);
-            bar();
         };
 
         document.getElementById('duration').addEventListener(isIE ? 'change' : 'input', function () {
@@ -320,5 +245,19 @@
         });
     </script>
 </body>
+<!-- 막대 차트 그리기 JS 모듈 사용 -->
+<script type="module">
+    import { bar } from './js/barchart.js';
+    // 요청으로 전력, 온도, 습도 시간, 일, 월 데이터 평균 합계 가져오기
+    axios.get('/sensor/data')
+        .then((response) => {
+            // 모듈로 받아온 데이터 넘기기
+            return bar(response.data);
+        })
+        .catch((error) => {
+            return alert(error);
+        });
+
+</script>
 
 </html>
