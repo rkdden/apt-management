@@ -50,7 +50,6 @@ export const drawBarChart = (chartType, chartData, name) => {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        max: 100,
                     },
                 }]
             }
