@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>차트 상세 페이지</title>
+
+    <!-- jquery datepicker cdn -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
 </head>
+
 <body>
-    
+    <!-- 기간 선택하는 달력 -->
+    <div class="date__div">
+        <h2>기간을 선택해주세요</h2>
+        <div class="datepicker">
+            <div id="datepicker">
+                <div id="checkin">
+                    <input type="text" placeholder="날짜선택" id="startfilter" name="startfilter" value="" />
+                </div>
+                <div id="checkout">
+                    <input type="text" placeholder="날짜선택" id="endfilter" name="endfilter" value="" />
+                </div>
+            </div>
+
+            <button id="dataSearch__btn">조회</button>
+        </div>
+    </div>
+
 </body>
+<script>
+    $(function () {
+
+        $('input[name="startfilter"], input[name="endfilter"]').daterangepicker({
+            autoUpdateInput: false,
+        });
+
+        $('input[name="startfilter"], input[name="endfilter"]').on('apply.daterangepicker', function (ev, picker) {
+            $('input[name="startfilter"]').val(picker.startDate.format('YYYY/MM/DD'));
+            $('input[name="endfilter"]').val(picker.endDate.format('YYYY/MM/DD'));
+        });
+    });
+</script>
+
 </html>
