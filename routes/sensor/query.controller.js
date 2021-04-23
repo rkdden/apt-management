@@ -9,7 +9,7 @@ const parseDate = (data) => {
 }
 
 // 습도 온도 받기
-exports.hourQuery = async (dataType) => {
+exports.hourQuery = async (dataType, calculateType) => {
     const result = await Sensor.findAll({
         where: {
             created_at: {
@@ -17,14 +17,14 @@ exports.hourQuery = async (dataType) => {
                 },
         },
         attributes: [
-            [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col(`${dataType}`)), 2 ), `hour${dataType}avg`],
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `hour${dataType}avg`],
         ],
         order: [['created_at', 'DESC']]
     });
     return result;
 };
 
-exports.dayQuery = async (dataType) => {
+exports.dayQuery = async (dataType, calculateType) => {
     const result = await Sensor.findAll({
         where: {
             created_at: {
@@ -32,14 +32,14 @@ exports.dayQuery = async (dataType) => {
                 },
         },
         attributes: [
-            [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col(`${dataType}`)), 2 ), `day${dataType}avg`],
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `day${dataType}avg`],
         ],
         order: [['created_at', 'DESC']]
     });
     return result;
 };
 
-exports.monthQuery = async (dataType) => {
+exports.monthQuery = async (dataType, calculateType) => {
     const result = await Sensor.findAll({
         where: {
             created_at: {
@@ -47,7 +47,7 @@ exports.monthQuery = async (dataType) => {
                 },
         },
         attributes: [
-            [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col(`${dataType}`)), 2 ), `month${dataType}avg`],
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `month${dataType}avg`],
         ],
         order: [['created_at', 'DESC']]
     });
