@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-streaming@1.8.0"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="../index.css">
 </head>
 
 <body>
@@ -247,7 +247,7 @@
 </body>
 <!-- 막대 차트 그리기 JS 모듈 사용 -->
 <script type="module">
-    import { bar } from './js/barchart.js';
+    import { bar } from '../js/barchart.js';
     // 요청으로 전력, 온도, 습도 시간, 일, 월 데이터 평균 합계 가져오기
     axios.get('/sensor/data')
         .then((response) => {
@@ -257,7 +257,6 @@
         .catch((error) => {
             return alert(error);
         });
-
 </script>
 
 </html>
