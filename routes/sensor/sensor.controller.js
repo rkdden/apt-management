@@ -1,5 +1,7 @@
 // const messageController = require('../message/message.controller');
 const query = require('./query.controller');
+const dateAndTime = require('date-and-time');
+
 
 
 exports.mainData = async (req, res) => {
@@ -29,4 +31,11 @@ exports.mainData = async (req, res) => {
 }
 exports.detailData = async (req, res) => {
     // 달력 눌러서
+    const { startfilter, endfilter, calculateType, dataType } = req.body.data;
+    try {
+        const result = await query.detailQuery(startfilter, endfilter, calculateType, dataType);
+        res.json(result)
+    } catch (error) {
+        console.error(error);
+    }
 }
