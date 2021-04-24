@@ -18,7 +18,7 @@ router.get('/kakao/callback', passport.authenticate('kakao', {
     if(exUser.apt_ho === null) {
         res.redirect('/auth/userinfo');
     } else {
-        res.redirect('/');
+        res.redirect('/chart');
     }
 });
 

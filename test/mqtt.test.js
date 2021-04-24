@@ -17,7 +17,7 @@ describe("Mqtt Test", () => {
                     number: "101호", // 아파트 호수
                     temperature: rand(18, 38),
                     humidity: rand(30, 50),
-                    watt: rand(20, 30),
+                    watt: rand(1, 2)/10,
                 }
                 // console.log(`send data = ${JSON.stringify(data)}`)
                 mqttClient.publish("sadang/data", JSON.stringify(data));
