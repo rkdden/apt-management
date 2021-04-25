@@ -17,7 +17,7 @@ exports.hourQuery = async (dataType, calculateType) => {
                 },
         },
         attributes: [
-            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `hour${dataType}avg`],
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `hour${dataType}${calculateType}`],
         ],
         order: [['created_at', 'DESC']]
     });
@@ -32,7 +32,7 @@ exports.dayQuery = async (dataType, calculateType) => {
                 },
         },
         attributes: [
-            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `day${dataType}avg`],
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `day${dataType}${calculateType}`],
         ],
         order: [['created_at', 'DESC']]
     });
@@ -47,7 +47,24 @@ exports.monthQuery = async (dataType, calculateType) => {
                 },
         },
         attributes: [
-            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `month${dataType}avg`],
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `month${dataType}${calculateType}`],
+        ],
+        order: [['created_at', 'DESC']]
+    });
+    return result;
+};
+
+exports.detailQuery = async ( startfilter, endfilter, calculateType, dataType ) => {
+    const start = parseDate(dateAndTime.parse(startfilter, 'YYYY/MM/DD'));
+    const end = parseDate(dateAndTime.parse(endfilter, 'YYYY/MM/DD'));
+    const result = await Sensor.findAll({
+        where: {
+            created_at: {
+                [Op.between]: [start, end],
+                },
+        },
+        attributes: [
+            [sequelize.fn('ROUND', sequelize.fn(`${calculateType}`, sequelize.col(`${dataType}`)), 2 ), `detail${dataType}${calculateType}`],
         ],
         order: [['created_at', 'DESC']]
     });

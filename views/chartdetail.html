@@ -11,6 +11,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 </head>
 
@@ -19,6 +20,14 @@
     <div class="date__div">
         <h2>기간을 선택해주세요</h2>
         <div class="datepicker">
+            <div>
+                <select id="dataType">
+                    <option value="">원하는 데이터 선택</option>
+                    <option value="temperature">온도</option>
+                    <option value="humidity">습도</option>
+                    <option value="electricity">전력량</option>
+                </select>
+            </div>
             <div id="datepicker">
                 <div id="checkin">
                     <input type="text" placeholder="날짜선택" id="startfilter" name="startfilter" value="" />
@@ -27,7 +36,7 @@
                     <input type="text" placeholder="날짜선택" id="endfilter" name="endfilter" value="" />
                 </div>
             </div>
-            <button id="dataSearch__btn">조회</button>
+            <button id="dataSearch__btn" onclick=request()>조회</button>
         </div>
     </div>
 
@@ -43,6 +52,37 @@
             $('input[name="endfilter"]').val(picker.endDate.format('YYYY/MM/DD'));
         });
     });
+    const request = () => {
+        const startfilter = "2021/04/01";
+        const endfilter = "2021/04/24";
+        const dataType = document.getElementById('dataType').value;
+        let calculateType = "";
+        if (dataType === "temperature" || dataType === "humidity") {
+            // 누른 데이터가 온도 또는 습도이면
+            calculateType = "AVG";
+        }else{
+            // 누른 데이터가 전력량이면
+            calculateType = "SUM";
+        }
+        axios.post('/sensor/data/detail', {
+            data: {
+                startfilter: startfilter,
+                endfilter: endfilter,
+                calculateType: calculateType,
+                dataType: dataType
+            }
+        })
+        .then((response) => {
+            // 모듈로 받아온 데이터 넘기기
+            // return bar(response.data);
+            // 여기부터
+            console.log(response.data);
+            return;
+        })
+        .catch((error) => {
+            return alert(error);
+        });
+    }
     // document.getElementById('dataSearch__btn').addEventListener
 </script>
 

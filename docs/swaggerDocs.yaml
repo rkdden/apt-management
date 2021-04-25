@@ -107,7 +107,7 @@ paths:
           description: 차트 메인 페이지 로딩 성공
         "404":
           description: 페이지 로드 실패
-  /chart/detail/{dataType}:
+  /chart/detail:
     get:
       tags:
         - chart
@@ -147,7 +147,7 @@ paths:
         '204':
           description: success
   /sensor/data/detail:
-    get:
+    post:
       tags:
         - sensor
       summary: chart main page data
