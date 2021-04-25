@@ -1,5 +1,6 @@
 // 막대 차트 그리기
 export const drawBarChart = (chartType, chartData, name) => {
+    console.log(chartData);
     const newChart = new Chart(chartType, {
         type: 'bar',
         data: {

@@ -3,11 +3,11 @@ import {drawBarChart} from './barchartController.js';
 
 // 막대 차트 온도, 습도, 전력량 데이터와 차트 위치 구하기
 const drawbar = (data) => {
-    console.log(data);
+    
     // 전력 온도 습도 별 데이터 구분
-    const humidityData = [data.day.humidity[0].dayhumidityavg, data.hour.humidity[0].hourhumidityavg, data.month.humidity[0].monthhumidityavg]
-    const temperatureData = [data.day.temperature[0].daytemperatureavg, data.hour.temperature[0].hourtemperatureavg, data.month.temperature[0].monthtemperatureavg]
-    const wattData = [data.day.electricity[0].dayelectricityavg, data.hour.electricity[0].hourelectricityavg, data.month.electricity[0].monthelectricityavg]
+    const humidityData = [data.day.humidity[0].dayhumidityAVG, data.hour.humidity[0].hourhumidityAVG, data.month.humidity[0].monthhumidityAVG]
+    const temperatureData = [data.day.temperature[0].daytemperatureAVG, data.hour.temperature[0].hourtemperatureAVG, data.month.temperature[0].monthtemperatureAVG]
+    const wattData = [data.day.electricity[0].dayelectricitySUM, data.hour.electricity[0].hourelectricitySUM, data.month.electricity[0].monthelectricitySUM]
     
     // 각각의 차트 
     const humidity = document.getElementById('humiditybarChart');
