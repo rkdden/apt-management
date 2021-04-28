@@ -86,7 +86,7 @@
                 document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 습도 평균은 ${result.detailhumidityAVG}% 입니다.`);
                 console.log("humidity");
             }else{
-                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 사용량은 ${result.detailelectricitySUM}kW 이며, 예상 전력비용은 ${result.detailelectricitySUM * 2.3}원 입니다.`);
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 사용량은 ${result.detailelectricitySUM}kW 이며, 예상 전력비용은 ${Math.round(result.detailelectricitySUM * 2.3)}원 입니다.`);
                 console.log("electricity");
             }
             return;
