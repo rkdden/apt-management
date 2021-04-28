@@ -6,7 +6,7 @@ var mailSender = {
             service: "Gmail",
             auth: {
                 user: "sadang.nodejs@gmail.com",
-                pass: "nodejs1234!"
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 

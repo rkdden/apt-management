@@ -38,6 +38,7 @@
             </div>
             <button id="dataSearch__btn" onclick=request()>조회</button>
         </div>
+        <div id="result"></div>
     </div>
 
 </body>
@@ -53,9 +54,10 @@
         });
     });
     const request = () => {
-        const startfilter = "2021/04/01";
-        const endfilter = "2021/04/24";
+        const startfilter = document.getElementById('startfilter').value;
+        const endfilter = document.getElementById('endfilter').value;;
         const dataType = document.getElementById('dataType').value;
+        const div = document.createElement('div');
         let calculateType = "";
         if (dataType === "temperature" || dataType === "humidity") {
             // 누른 데이터가 온도 또는 습도이면
@@ -76,14 +78,23 @@
             // 모듈로 받아온 데이터 넘기기
             // return bar(response.data);
             // 여기부터
-            console.log(response.data);
+            let result = response.data[0];
+            if (result.detailtemperatureAVG) {
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 온도 평균은 ${result.detailtemperatureAVG}℃ 입니다.`);
+                console.log("temperature");
+            }else if (result.detailhumidityAVG) {
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 습도 평균은 ${result.detailhumidityAVG}% 입니다.`);
+                console.log("humidity");
+            }else{
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 사용량은 ${result.detailelectricitySUM}kW 이며, 예상 전력비용은 ${Math.round(result.detailelectricitySUM * 2.3)}원 입니다.`);
+                console.log("electricity");
+            }
             return;
         })
         .catch((error) => {
             return alert(error);
         });
     }
-    // document.getElementById('dataSearch__btn').addEventListener
 </script>
 
 </html>
