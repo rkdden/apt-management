@@ -1,17 +1,7 @@
-const logger = require('../../config/winston')('electricity.controller');
-const sequelize = require('sequelize');
+const logger = require('../../config/winston')('message.controller');
 const axios = require('axios');
-const { AptDong, AptHo, Sensor} = require('../../models');
 
 module.exports = {
-    async findAll (req, res) {
-        
-        const electricity = await Sensor.count({
-            
-        });
-        logger.info(electricity);
-    },
-
     sendMessage (req, res, param) {
         //const messageTitle = req.result.Sensor.sensoravg;
         
@@ -29,7 +19,7 @@ module.exports = {
         const template_objectStr = JSON.stringify(template_objectObj);
     
         // axios 로 요청보냄
-        const accessToken = `Bearer ${req.user}`;
+        const accessToken = `Bearer ${req.user.accessToken}`;
         
         axios.post('https://kapi.kakao.com/v2/api/talk/memo/default/send', `template_object= ${template_objectStr}`, {
                 headers: {
@@ -46,7 +36,6 @@ module.exports = {
             })
             .catch((error) => {
                 return console.log(error);
-            });
-        
+            }); 
     }
 };
