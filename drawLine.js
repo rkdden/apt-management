@@ -13,12 +13,10 @@ function get_Month() {
 	return today.getMonth() + 1;
 }
 
-function makeFolder() {
-	const folderName = './public/' + get_Month();
-
+function makeFolder(dir) {
 	try {
-		if (!fs.existsSync(folderName)) {
-			fs.mkdirSync(folderName)
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir)
 		}
 	} catch (err) {
 		console.error(err)
@@ -36,9 +34,11 @@ async function saveChart(year, month, filename, type, data) {
 
 	});
 
+	const folderName = './data/' + get_Month();
+
 	// Write file to disk
-	makeFolder();
-	await chart.toFile(filename);
+	makeFolder(folderName);
+	await chart.toFile(folderName + "/" +  filename);
 }
 
 module.exports = saveChart;

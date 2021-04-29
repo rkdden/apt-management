@@ -18,15 +18,15 @@ const mailSender = {
 			attachments: [
 				{
 					filename: param.name + "_temp.png",
-					path: __dirname + '/public/' + param.month + "/" + param.name + "_temp.png"
+					path: __dirname + '/data/' + param.month + "/" + param.name + "_temp.png"
 				},
 				{
 					filename: param.name + "_humi.png",
-					path: __dirname + '/public/' + param.month + "/" + param.name + "_humi.png"
+					path: __dirname + '/data/' + param.month + "/" + param.name + "_humi.png"
 				},
 				{
 					filename: param.name + "_watt.png",
-					path: __dirname + '/public/' + param.month + "/" + param.name + "_watt.png"
+					path: __dirname + '/data/' + param.month + "/" + param.name + "_watt.png"
 				},
 			]
 		};
