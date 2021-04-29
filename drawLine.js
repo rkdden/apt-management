@@ -1,20 +1,29 @@
 const ChartJsImage = require('chartjs-to-image');
 
-const lineChart = new ChartJsImage();
+const chart = new ChartJsImage();
 
-lineChart.setConfig({
-	type: "line",
-	data: {
-		labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-			"20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"],
-		datasets: [{
-			"backgroundColor": "rgba(255,150,150,0.5)",
-			"borderColor": "rgb(255,150,150)",
-			"data": [-23, 64, 21, 53, -39, -30, 28, -10],
-			"label": "Dataset",
-			"fill": "origin"
-		}]
-	},
-});
+const days = function(month,year) {
+	return new Date(year, month, 0).getDate();
+};
 
-module.exports = lineChart;
+async function saveChart(year, month, filename, type, data) {
+	const day = days(month, year);
+
+	const labels = Array.from({length: day}, (_, i) => i + 1);
+
+	chart.setConfig({
+		type: 'line',
+		data: { labels: labels, datasets: [{ label: type, data }] },
+
+	});
+
+	// Write file to disk
+	await chart.toFile(filename);
+}
+
+module.exports = saveChart;
+
+/* usage
+const data = [...Array(100).keys()]; => data for temperature or humidity or watt
+saveChart(2021, 4, "./newchart.png", "temp", data);
+*/
