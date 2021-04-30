@@ -30,7 +30,7 @@ var emailParam = {
 };
 
 var rule = new schedule.RecurrenceRule();
-var m = 15;
+var m = 20;
 rule.minute = m;
 
 

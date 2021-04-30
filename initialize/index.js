@@ -8,7 +8,6 @@ const { sequelize } = require('../models');
 const {colorize} = require('../utils/console');
 const logger = require('../config/winston')('initialize');
 const schedule = require('node-schedule');
-const mailTest = require('../mailTest');
 const commConfig = yaml.load(fs.readFileSync(path.join(__dirname, "..", "config", "config.yaml"), 'utf8'));
 const config = commConfig[process.env.NODE_ENV || "development"];
 const ip = internalIp.v4.sync();
@@ -66,7 +65,6 @@ const nodeSchedule = () => {
     logger.info('==================================');
     logger.info(`schedule count : ${list} 개`);
     logger.info('==================================');
-    mailTest;
 };
 
 
