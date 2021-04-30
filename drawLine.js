@@ -34,11 +34,13 @@ async function saveChart(month, year, filename, type, data) {
 
 	});
 
+    // 월별 / 데이터별 파일 구분하기
 	const folderName = './data/' + get_Month();
-
+    const monthPath = folderName + '/' + type;
 	// Write file to disk
 	makeFolder(folderName);
-	await chart.toFile(folderName + "/" +  filename);
+    makeFolder(monthPath);
+	await chart.toFile(monthPath + "/" +  filename);
 }
 
 module.exports = saveChart;
