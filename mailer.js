@@ -6,7 +6,7 @@ const mailSender = {
 			service: "Gmail",
 			auth: {
 				user: "sadang.nodejs@gmail.com",
-				pass: process.env.EMAIL_PASSWORD
+				pass: "nodejs1234!"
 			}
 		});
 

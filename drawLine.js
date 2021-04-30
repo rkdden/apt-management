@@ -23,7 +23,7 @@ function makeFolder(dir) {
 	}
 }
 
-async function saveChart(year, month, filename, type, data) {
+async function saveChart(month, year, filename, type, data) {
 	const day = days(month, year);
 
 	const labels = Array.from({length: day}, (_, i) => i + 1);

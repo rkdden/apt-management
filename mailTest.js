@@ -2,7 +2,7 @@ const schedule = require('node-schedule');
 const mail = require("./mailer");
 const drawChart = require("./drawLine");
 
-
+console.log('-----');
 const data = [...Array(100).keys()];
 
 function get_Month() {
@@ -23,7 +23,7 @@ const filehumi = basename + "humi.png";
 drawChart(4, 2021, filehumi, "Humi", data);
 
 var emailParam = {
-  toEmail: "jhbird.choi@gmail.com",
+  toEmail: "juren52@naver.com",
   subject: "Test",
   text: "Test",
   name: "1_1_101",
@@ -31,7 +31,7 @@ var emailParam = {
 };
 
 var rule = new schedule.RecurrenceRule();
-var m = 29;
+var m = 21;
 rule.minute = m;
 
 
