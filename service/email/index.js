@@ -1,7 +1,7 @@
 const schedule = require('node-schedule');
 const mailSender = require("./mailer");
 const saveChart = require("./drawLine");
-const apt_Info = require('./service/emailService');
+const apt_Info = require('./emailService');
 
 const data = [...Array(100).keys()];
 

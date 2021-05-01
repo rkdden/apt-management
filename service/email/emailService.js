@@ -1,4 +1,4 @@
-const { AptHo, AptDong } = require('../models');
+const { AptHo, AptDong } = require('../../models');
 
 module.exports = {
     async aptFind() {

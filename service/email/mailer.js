@@ -1,5 +1,5 @@
 const mailer = require('nodemailer');
-const logger = require('./config/winston')('mailer');
+const logger = require('../../config/winston')('mailer');
 const mailSender = {
 	sendGmail: function(param) {
 		const transporter = mailer.createTransport({

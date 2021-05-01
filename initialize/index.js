@@ -8,12 +8,11 @@ const { sequelize } = require('../models');
 const {colorize} = require('../utils/console');
 const logger = require('../config/winston')('initialize');
 const schedule = require('node-schedule');
-const emailTest = require('../mailTest');
 const commConfig = yaml.load(fs.readFileSync(path.join(__dirname, "..", "config", "config.yaml"), 'utf8'));
 const config = commConfig[process.env.NODE_ENV || "development"];
 const ip = internalIp.v4.sync();
 const port = config.comm.nodePort || 3000;
-
+require('../service/email/index');
 
 const assertDatabaseConnectionOK = async () => {
     // 시퀄라이즈 설정
