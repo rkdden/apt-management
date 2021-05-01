@@ -1,12 +1,12 @@
 const schedule = require('node-schedule');
-const mail = require("./mailer");
-const drawChart = require("./drawLine");
+const mailSender = require("./mailer");
+const saveChart = require("./drawLine");
 const apt_Info = require('./service/emailService');
 
 const data = [...Array(100).keys()];
 
 function get_Month() {
-	var today = new Date();
+	const today = new Date();
 
 	return today.getMonth() + 1;
 }
@@ -27,39 +27,40 @@ const basename = async () => {
 // 아파트 모든 세대의 전력 차트 그리기
 const wattChart = (fileName) => {
     const filewatt = fileName + "watt.png";
-    drawChart(4, 2021, filewatt, "Watt", data);
+    saveChart(4, 2021, filewatt, "Watt", data);
 };
 
 // 아파트 모든 세대 온도 차트 그리기
 const tempChart = (fileName) => {
     const filetemp = fileName + "temp.png";
-    drawChart(4, 2021, filetemp, "Temp", data);
+    saveChart(4, 2021, filetemp, "Temp", data);
 };
 
 // 아파트 모든 세대 습도 차트 그리기
 const humiChart = (fileName) => {
     const filehumi = fileName + "humi.png";
-    drawChart(4, 2021, filehumi, "Humi", data);
+    saveChart(4, 2021, filehumi, "Humi", data);
 };
 
-// var emailParam = {
-//   toEmail: "juren52@naver.com",
-//   subject: "TEST",
-//   text: "TEST.",
-//   name: "1_1_101",
-//   month: get_Month()
-// };
+const emailParam = {
+    toEmail: "12tndbs12@naver.com",
+    subject: "TEST",
+    text: "TEST.",
+    name: "1_1_101",
+    month: get_Month()
+};
 
-// var rule = new schedule.RecurrenceRule();
-// var m = 32;
-// rule.minute = m;
+const rule = new schedule.RecurrenceRule();
+const m = 3;
+rule.minute = m;
 
-
-// var j = schedule.scheduleJob(rule, function() {
+// 스케줄러
+// const j = schedule.scheduleJob(rule, function() {
 //         console.log("Run mail");
-//         mail.setFileName("bird");
-//         mail.sendGmail(emailParam);
+//         mailSender.setFileName("bird");
+//         mailSender.sendGmail(emailParam);
+//         basename();
 // });
 
-
+// 바로 확인용
 basename();

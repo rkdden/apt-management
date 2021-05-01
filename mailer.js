@@ -1,12 +1,12 @@
 const mailer = require('nodemailer');
-
+const logger = require('./config/winston')('mailer');
 const mailSender = {
 	sendGmail: function(param) {
 		const transporter = mailer.createTransport({
 			service: "Gmail",
 			auth: {
 				user: "sadang.nodejs@gmail.com",
-				pass: "nodejs1234!"
+				pass: process.env.EMAIL_PASSWORD,
 			}
 		});
 
@@ -33,7 +33,7 @@ const mailSender = {
 
 		transporter.sendMail(mailOptions, function(error, info) {
 			if (error) {
-				console.log(error);
+				logger.error(error);
 			} else {
 				console.log("Email sent: " + info.response);
 			}

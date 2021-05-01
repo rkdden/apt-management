@@ -7,13 +7,13 @@ const days = function(month,year) {
 	return new Date(year, month, 0).getDate();
 };
 
-function get_Month() {
-	var today = new Date();
+const get_Month = () => {
+	const today = new Date();
 
 	return today.getMonth() + 1;
 }
 
-function makeFolder(dir) {
+const makeFolder = (dir) => {
 	try {
 		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir)
@@ -23,7 +23,7 @@ function makeFolder(dir) {
 	}
 }
 
-async function saveChart(month, year, filename, type, data) {
+const saveChart = async (month, year, filename, type, data) => {
 	const day = days(month, year);
 
 	const labels = Array.from({length: day}, (_, i) => i + 1);
