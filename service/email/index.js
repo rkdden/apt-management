@@ -3,7 +3,7 @@ const mailSender = require("./mailer");
 const saveChart = require("./drawLine");
 const apt_Info = require('./emailService');
 
-const data = [...Array(100).keys()];
+//const data = [...Array(100).keys()];
 
 const get_Month = () => {
 	const today = new Date();
@@ -11,17 +11,37 @@ const get_Month = () => {
 	return today.getMonth() + 1;
 }
 
+// 아파트 단지, 동, 호 일별 데이터 가져오기
+const sensorData = async (Complex, Dong, Ho) => {
+    // let fileName = aptComplex + aptDong + aptHo;
+    console.log(Complex + Dong + Ho);
+    let exData = await apt_Info.sensorFind(Complex, Dong, Ho);
+
+    // console.dir(exData);
+    // //console.log(exData[0].dataValues.AptHo.AptDong.apt_complex);
+    // exData.map((data) => {
+    //     console.log(data.dataValues.AptHo.AptDong.apt_complex + data.dataValues.AptHo.AptDong.apt_dong + data.dataValues.AptHo.apt_ho);
+    //     console.log(data.dataValues.date);
+    //     //console.log(data.dataValues.temperatureAVG);
+    //     console.log(data.dataValues.humidityAVG);
+    // });
+    return exData
+};
+
 //const basename = apt_Info.aptFind(); // danji_dong_ho
 // 아파트의 모든 단지 동 호 정보 가져오기
 const basename = async () => {
     const aptInfo = await apt_Info.aptFind();
-    for (let i = 0; i < aptInfo.length; i++){
-        console.log(aptInfo[i].AptDong.apt_complex + aptInfo[i].AptDong.apt_dong + aptInfo[i].apt_ho);
-        let fileName = aptInfo[i].AptDong.apt_complex + aptInfo[i].AptDong.apt_dong + aptInfo[i].apt_ho;
-        wattChart(fileName);
-        tempChart(fileName);
-        humiChart(fileName);
+    
+    for(let i=0; i < aptInfo.length; i++) {
+        let hi = await sensorData(aptInfo[i].AptDong.apt_complex, aptInfo[i].AptDong.apt_dong, aptInfo[i].apt_ho);
+        console.log(aptInfo[i].AptDong.apt_complex + aptInfo[i].AptDong.apt_dong + aptInfo[i].apt_ho + "에 대한 데이터" + hi);
     };
+    // aptInfo.map(async (AptHo) => {
+    //     let hi = await sensorData(AptHo.AptDong.apt_complex, AptHo.AptDong.apt_dong, AptHo.apt_ho);
+    //     console.log(AptHo.AptDong.apt_complex + AptHo.AptDong.apt_dong + AptHo.apt_ho + "에 대한 데이터" + hi);
+    //     //await apt_Info.sensorFind
+    // });
 };
 
 // 아파트 모든 세대의 전력 차트 그리기
@@ -37,9 +57,9 @@ const tempChart = (fileName) => {
 };
 
 // 아파트 모든 세대 습도 차트 그리기
-const humiChart = (fileName) => {
+const humiChart = (fileName, data) => {
     const filehumi = fileName + "humi.png";
-    saveChart(4, 2021, filehumi, "Humi", data);
+    saveChart(5, 2021, filehumi, "Humi", data);
 };
 
 const emailParam = {
