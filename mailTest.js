@@ -5,7 +5,7 @@ const apt_Info = require('./service/emailService');
 
 const data = [...Array(100).keys()];
 
-function get_Month() {
+const get_Month = () => {
 	const today = new Date();
 
 	return today.getMonth() + 1;
