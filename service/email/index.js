@@ -2,10 +2,15 @@ const schedule = require('node-schedule');
 const mailSender = require("./mailer");
 const saveChart = require("./drawLine");
 const apt_Info = require('./emailService');
+const { User, Sensor, AptHo, AptDong } = require('../../models');
 
 //const data = [...Array(100).keys()];
 
-const get_Month = () => {
+const get_year = () => {
+    const year = new Date();
+    return year.getFullYear();
+}
+const get_month = () => {
 	const today = new Date();
 
 	return today.getMonth() + 1;
@@ -47,40 +52,50 @@ const basename = async () => {
 // 아파트 모든 세대의 전력 차트 그리기
 const wattChart = (fileName) => {
     const filewatt = fileName + "watt.png";
-    saveChart(4, 2021, filewatt, "Watt", data);
+    saveChart(get_month(), get_year(), filewatt, "Watt", data);
 };
 
 // 아파트 모든 세대 온도 차트 그리기
 const tempChart = (fileName) => {
     const filetemp = fileName + "temp.png";
-    saveChart(4, 2021, filetemp, "Temp", data);
+    saveChart(get_month(), get_year(), filetemp, "Temp", data);
 };
 
 // 아파트 모든 세대 습도 차트 그리기
 const humiChart = (fileName, data) => {
     const filehumi = fileName + "humi.png";
-    saveChart(5, 2021, filehumi, "Humi", data);
+    saveChart(get_month(), get_year(), filehumi, "Humi", data);
 };
 
-const emailParam = {
-    toEmail: "12tndbs12@naver.com",
-    subject: "TEST",
-    text: "TEST.",
-    name: "1_1_101",
-    month: get_Month()
-};
 
 const rule = new schedule.RecurrenceRule();
-const m = 3;
+const m = 23;
 rule.minute = m;
 
-// 스케줄러
-// const j = schedule.scheduleJob(rule, function() {
-//         console.log("Run mail");
-//         mailSender.setFileName("bird");
-//         mailSender.sendGmail(emailParam);
-//         basename();
-// });
-
-// 바로 확인용
-basename();
+const mailResult = async () => {
+    const userinfo = await User.findAll({
+        attributes: ['uemail', 'apt_ho'],
+        include: {
+            model: AptHo,
+            include: {
+                model: AptDong,
+            }
+        },
+    });
+    userinfo.map((user) => {
+        let emailParam = {
+            toEmail: `${user.uemail}`,
+            subject: `${get_month()}월 사용량입니다.`,
+            text: `${get_month()}월 사용량입니다.`,
+            // ex)1단지101동101호
+            name: `${user.AptHo.AptDong.apt_complex}${user.AptHo.AptDong.apt_dong}${user.AptHo.apt_ho}`,
+            month: get_month()
+        };
+        const j = schedule.scheduleJob(rule, async function() {
+            console.log("Run mail");
+            await basename();
+            mailSender.sendGmail(emailParam);
+        });
+    })
+}
+mailResult();
