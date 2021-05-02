@@ -3,17 +3,10 @@ const mailSender = require("./mailer");
 const saveChart = require("./drawLine");
 const apt_Info = require('./emailService');
 const dateAndTime = require('date-and-time');
-const { User, Sensor, AptHo, AptDong } = require('../../models');
+const { User, AptHo, AptDong } = require('../../models');
 
-//const data = [...Array(100).keys()];
-
-const get_year = () => {
-    const year = new Date();
-    return year.getFullYear();
-}
 const get_month = () => {
 	const today = new Date();
-
 	return today.getMonth() + 1;
 }
 
@@ -23,7 +16,6 @@ const sensorData = async (Complex, Dong, Ho) => {
     return exData;
 };
 
-//const basename = apt_Info.aptFind(); // danji_dong_ho
 // 아파트의 모든 단지 동 호 정보 가져오기
 const basename = async () => {
     const aptInfo = await apt_Info.aptFind();
@@ -57,22 +49,23 @@ const basename = async () => {
 // 아파트 모든 세대의 전력 차트 그리기
 const wattChart = (fileName, data, date) => {
     const filewatt = fileName + "watt.png";
-    saveChart(get_month(), get_year(), filewatt, "Watt", date);
+    saveChart(filewatt, "Watt", date);
 };
 
 // 아파트 모든 세대 온도 차트 그리기
 const tempChart = (fileName, data, date) => {
     const filetemp = fileName + "temp.png";
-    saveChart(get_month(), get_year(), filetemp, "Temp", data, date);
+    saveChart(filetemp, "Temp", data, date);
 };
 
 // 아파트 모든 세대 습도 차트 그리기
 const humiChart = (fileName, data, date) => {
     const filehumi = fileName + "humi.png";
-    saveChart(get_month(), get_year(), filehumi, "Humi", data, date);
+    saveChart(filehumi, "Humi", data, date);
 };
 
-
+// 스켘줄러 시간 지정 
+// 수정 해야됨!!!!!!!!!!
 const rule = new schedule.RecurrenceRule();
 const m = 15;
 rule.minute = m;
