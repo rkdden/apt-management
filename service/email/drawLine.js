@@ -23,15 +23,13 @@ const makeFolder = (dir) => {
 	}
 }
 
-const saveChart = async (month, year, filename, type, data, date) => {
-	const day = days(month, year);
-
+const saveChart = async (filename, type, data, date) => {
+    // 차트 label 지정
 	const labels = date;
-
+    // 차트 그리기
 	chart.setConfig({
 		type: 'line',
 		data: { labels: labels, datasets: [{ label: type, data }] },
-
 	});
 
     // 월별 / 데이터별 파일 구분하기
