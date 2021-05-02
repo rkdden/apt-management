@@ -23,10 +23,10 @@ const makeFolder = (dir) => {
 	}
 }
 
-const saveChart = async (month, year, filename, type, data) => {
+const saveChart = async (month, year, filename, type, data, date) => {
 	const day = days(month, year);
 
-	const labels = Array.from({length: day}, (_, i) => i + 1);
+	const labels = date;
 
 	chart.setConfig({
 		type: 'line',
