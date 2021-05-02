@@ -49,7 +49,7 @@ const basename = async () => {
 // 아파트 모든 세대의 전력 차트 그리기
 const wattChart = (fileName, data, date) => {
     const filewatt = fileName + "watt.png";
-    saveChart(filewatt, "Watt", date);
+    saveChart(filewatt, "Watt", data, date);
 };
 
 // 아파트 모든 세대 온도 차트 그리기
@@ -64,12 +64,21 @@ const humiChart = (fileName, data, date) => {
     saveChart(filehumi, "Humi", data, date);
 };
 
-// 스켘줄러 시간 지정 
-// 수정 해야됨!!!!!!!!!!
-const rule = new schedule.RecurrenceRule();
-const m = 15;
-rule.minute = m;
+// 차트그리기 스케줄러
+const drawChart = async () => {
+    
+    const rule = new schedule.RecurrenceRule();
+    const m = 26;
+    rule.minute = m;
 
+    const jobs = schedule.scheduleJob(rule, async function() {
+        console.log("차트 그리기 시작");
+        await basename();
+    });
+};
+
+// 이메일 보내기 스케줄러 시간 지정 
+// 수정 해야됨!!!!!!!!!!
 const mailResult = async () => {
     const userinfo = await User.findAll({
         attributes: ['uemail', 'apt_ho'],
@@ -89,11 +98,18 @@ const mailResult = async () => {
             name: `${user.AptHo.AptDong.apt_complex}${user.AptHo.AptDong.apt_dong}${user.AptHo.apt_ho}`,
             month: get_month()
         };
+
+        const rule = new schedule.RecurrenceRule();
+        const m = 27;
+        rule.minute = m;
+
         const j = schedule.scheduleJob(rule, async function() {
             console.log("Run mail");
-            await basename();
+            //await basename();
             mailSender.sendGmail(emailParam);
         });
-    })
-}
+    });
+};
+
+drawChart();
 mailResult();

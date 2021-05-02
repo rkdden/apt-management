@@ -18,15 +18,15 @@ const mailSender = {
 			attachments: [
 				{
 					filename: `${param.name}.png`,
-					path: `${__dirname}/../../data/${param.month}/temp/${param.name}temp.png`
+					path: `${__dirname}/../../data/${param.month}/Temp/${param.name}temp.png`
 				},
 				{
 					filename: `${param.name}.png`,
-					path: `${__dirname}/../../data/${param.month}/humi/${param.name}humi.png`
+					path: `${__dirname}/../../data/${param.month}/Humi/${param.name}humi.png`
 				},
 				{
 					filename: `${param.name}.png`,
-					path: `${__dirname}/../../data/${param.month}/watt/${param.name}watt.png`
+					path: `${__dirname}/../../data/${param.month}/Watt/${param.name}watt.png`
 				},
 			]
 		};

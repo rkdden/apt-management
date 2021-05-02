@@ -43,7 +43,7 @@ exports.sensorFind = async (Complex, Dong, Ho) => {
             [sequelize.fn('DATE', sequelize.col('created_at')), 'date'],
             [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('temperature')), 2 ), 'temperatureAVG'],
             [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('humidity')), 2 ), 'humidityAVG'],
-            [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('electricity')), 2 ), 'electricitySUM'],
+            [sequelize.fn('SUM', sequelize.col('electricity')), 'electricitySUM'],
         ],
         group: 'date',
         include: {
