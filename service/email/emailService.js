@@ -35,7 +35,7 @@ exports.sensorFind = async (Complex, Dong, Ho) => {
     const exData = await Sensor.findAll({
         where: {
             created_at: { // 한달 전 데이터 
-                [Op.between]: [parseDate(dateAndTime.addMonths(now, -1)), parseDate(dateAndTime.addDays(now, -1))],
+                [Op.between]: [parseDate(dateAndTime.addDays(dateAndTime.addMonths(now, -1), -1)), parseDate(dateAndTime.addDays(now, -1))],
                 },
             apt_ho: Hoid.id,
         },

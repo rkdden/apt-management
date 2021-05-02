@@ -64,18 +64,15 @@ const humiChart = (fileName, data, date) => {
     saveChart(filehumi, "Humi", data, date);
 };
 
-// 차트그리기 스케줄러
+//차트그리기 스케줄러
 const drawChart = async () => {
-    
-    const rule = new schedule.RecurrenceRule();
-    const m = 26;
-    rule.minute = m;
-
-    const jobs = schedule.scheduleJob(rule, async function() {
+    // 매달 자정에 파일 생성
+    const jobs = schedule.scheduleJob('0 0 01 * *', function() {
         console.log("차트 그리기 시작");
-        await basename();
+        basename();
     });
 };
+
 
 // 이메일 보내기 스케줄러 시간 지정 
 // 수정 해야됨!!!!!!!!!!
@@ -99,11 +96,12 @@ const mailResult = async () => {
             month: get_month()
         };
 
-        const rule = new schedule.RecurrenceRule();
-        const m = 27;
-        rule.minute = m;
-
-        const j = schedule.scheduleJob(rule, async function() {
+        // const rule = new schedule.RecurrenceRule();
+        // const m = 27;
+        // rule.minute = m;
+        
+        // 매달 1일 0시 1분 이메일 보내기 실행
+        const j = schedule.scheduleJob('1 0 01 * *', async function() {
             console.log("Run mail");
             //await basename();
             mailSender.sendGmail(emailParam);
