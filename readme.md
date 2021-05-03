@@ -7,7 +7,3 @@
 <https://www.erdcloud.com/d/5frtGAuCpidojShxd>
 
 # REST
-
-
-# 수정 예정
-* 이메일 보내기 부분
