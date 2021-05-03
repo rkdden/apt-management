@@ -26,7 +26,7 @@ const basename = async () => {
         // 단지, 동, 호의 센서 데이터 받아오기.
         let data = await sensorData(aptInfo[i].AptDong.apt_complex, aptInfo[i].AptDong.apt_dong, aptInfo[i].apt_ho);
 
-        // 차트를 그리기위한 날짜, 데이터 별 배얄 분리
+        // 차트를 그리기위한 날짜, 데이터 별 배열 분리
         let dateArray = []; 
         let humiArray = [];
         let tempArray = [];
@@ -93,17 +93,16 @@ const mailResult = async () => {
             text: `${get_month() - 1}월 사용량입니다.`,
             // ex)1단지101동101호
             name: `${user.AptHo.AptDong.apt_complex}${user.AptHo.AptDong.apt_dong}${user.AptHo.apt_ho}`,
-            month: get_month()
+            month: get_month() - 1,
         };
 
         // const rule = new schedule.RecurrenceRule();
-        // const m = 27;
+        // const m = 13;
         // rule.minute = m;
         
         // 매달 1일 0시 1분 이메일 보내기 실행
         const j = schedule.scheduleJob('1 0 01 * *', async function() {
             console.log("Run mail");
-            //await basename();
             mailSender.sendGmail(emailParam);
         });
     });
