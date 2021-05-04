@@ -65,9 +65,9 @@ const humiChart = (fileName, data, date) => {
 };
 
 //차트그리기 스케줄러
-const drawChart = async () => {
+const drawChart = () => {
     // 매달 자정에 파일 생성
-    const jobs = schedule.scheduleJob('0 0 01 * *', function() {
+    const jobs = schedule.scheduleJob('13 15 04 * *', function() {
         console.log("차트 그리기 시작");
         basename();
     });
@@ -101,7 +101,7 @@ const mailResult = async () => {
         // rule.minute = m;
         
         // 매달 1일 0시 1분 이메일 보내기 실행
-        const j = schedule.scheduleJob('1 0 01 * *', async function() {
+        const j = schedule.scheduleJob('14 15 04 * *', function() {
             console.log("Run mail");
             mailSender.sendGmail(emailParam);
         });
