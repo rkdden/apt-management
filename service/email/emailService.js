@@ -2,14 +2,16 @@ const dateAndTime = require('date-and-time');
 const { AptDong, AptHo, Sensor, sequelize } = require('../../models');
 const { Op } = require("sequelize");
 
-const now = new Date();
+const now = new Date('2021-05-01 00:00:00'); // 여기서 날짜는 저시간에 실행됬다는 가정임
 // 날짜 파싱
-const parseDate = (data) => {
-    return dateAndTime.format(data, 'YYYY-MM-DD HH:mm:ss');
+
+// 매달 1일 0시 0분 0초 return
+const startDate = (data) => {
+    return dateAndTime.format(data, 'YYYY-MM-DD 00:00:00');
 }
-// 매달 1일 계산
-const parseMonth = (data) => {
-    return dateAndTime.format(data, 'YYYY-MM-01 00:00:00');
+// 매달 말일 23시 59분 59초 return
+const endDate = (data) => {
+    return dateAndTime.format(data, 'YYYY-MM-DD 23:59:59');
 }
 
 exports.aptFind = async () => {
@@ -39,8 +41,7 @@ exports.sensorFind = async (Complex, Dong, Ho) => {
     const exData = await Sensor.findAll({
         where: {
             created_at: { // 한달 전 데이터 
-                // [Op.between]: [parseDate(dateAndTime.addDays(dateAndTime.addMonths(now, -1), -1)), parseDate(dateAndTime.addDays(now, -1))],
-                [Op.between] : [parseMonth(dateAndTime.addMonths(now, -1)), parseMonth(dateAndTime.addMonths(now, 0))]
+                [Op.between]: [startDate(dateAndTime.addMonths(now, -1)), endDate(dateAndTime.addDays(now, -1))],
                 },
             apt_ho: Hoid.id,
         },
