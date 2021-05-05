@@ -4,6 +4,7 @@ const saveChart = require("./drawLine");
 const apt_Info = require('./emailService');
 const dateAndTime = require('date-and-time');
 const { User, AptHo, AptDong } = require('../../models');
+const logger = require('../../config/winston')('emailIndex');
 
 const get_month = () => {
 	const today = new Date();
@@ -44,6 +45,8 @@ const basename = async () => {
         tempChart(fileName, tempArray, dateArray);
         wattChart(fileName, wattArray, dateArray);
     };
+    console.log("차트 그리기 시작");
+    logger.info('create chart');
 };
 
 // 아파트 모든 세대의 전력 차트 그리기
@@ -67,15 +70,13 @@ const humiChart = (fileName, data, date) => {
 //차트그리기 스케줄러
 const drawChart = () => {
     // 매달 자정에 파일 생성
-    const jobs = schedule.scheduleJob('13 15 04 * *', function() {
-        console.log("차트 그리기 시작");
+    const jobs = schedule.scheduleJob('0 0 01 * *', function() {
         basename();
     });
 };
 
 
 // 이메일 보내기 스케줄러 시간 지정 
-// 수정 해야됨!!!!!!!!!!
 const mailResult = async () => {
     const userinfo = await User.findAll({
         attributes: ['uemail', 'apt_ho'],
@@ -96,13 +97,10 @@ const mailResult = async () => {
             month: get_month() - 1,
         };
 
-        // const rule = new schedule.RecurrenceRule();
-        // const m = 13;
-        // rule.minute = m;
-        
-        // 매달 1일 0시 1분 이메일 보내기 실행
-        const j = schedule.scheduleJob('14 15 04 * *', function() {
-            console.log("Run mail");
+        // 매달 1일 0시 15분 이메일 보내기 실행
+        const j = schedule.scheduleJob('15 0 01 * *', function() {
+            console.log("send mail");
+            logger.info('send mail');
             mailSender.sendGmail(emailParam);
         });
     });
