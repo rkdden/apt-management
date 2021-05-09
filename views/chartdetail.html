@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차트 상세 페이지</title>
+
+    <!-- jquery datepicker cdn -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<body>
+    <!-- 기간 선택하는 달력 -->
+    <div class="date__div">
+        <h2>기간을 선택해주세요</h2>
+        <div class="datepicker">
+            <div>
+                <select id="dataType">
+                    <option value="">원하는 데이터 선택</option>
+                    <option value="temperature">온도</option>
+                    <option value="humidity">습도</option>
+                    <option value="electricity">전력량</option>
+                </select>
+            </div>
+            <div id="datepicker">
+                <div id="checkin">
+                    <input type="text" placeholder="날짜선택" id="startfilter" name="startfilter" value="" />
+                </div>
+                <div id="checkout">
+                    <input type="text" placeholder="날짜선택" id="endfilter" name="endfilter" value="" />
+                </div>
+            </div>
+            <button id="dataSearch__btn" onclick=request()>조회</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+</body>
+<script>
+    $(function () {
+        $('input[name="startfilter"], input[name="endfilter"]').daterangepicker({
+            autoUpdateInput: false,
+        });
+
+        $('input[name="startfilter"], input[name="endfilter"]').on('apply.daterangepicker', function (ev, picker) {
+            $('input[name="startfilter"]').val(picker.startDate.format('YYYY/MM/DD'));
+            $('input[name="endfilter"]').val(picker.endDate.format('YYYY/MM/DD'));
+        });
+    });
+    const request = () => {
+        const startfilter = document.getElementById('startfilter').value;
+        const endfilter = document.getElementById('endfilter').value;;
+        const dataType = document.getElementById('dataType').value;
+        const div = document.createElement('div');
+        let calculateType = "";
+        if (dataType === "temperature" || dataType === "humidity") {
+            // 누른 데이터가 온도 또는 습도이면
+            calculateType = "AVG";
+        }else{
+            // 누른 데이터가 전력량이면
+            calculateType = "SUM";
+        }
+        axios.post('/sensor/data/detail', {
+            data: {
+                startfilter: startfilter,
+                endfilter: endfilter,
+                calculateType: calculateType,
+                dataType: dataType
+            }
+        })
+        .then((response) => {
+            // 모듈로 받아온 데이터 넘기기
+            // return bar(response.data);
+            // 여기부터
+            let result = response.data[0];
+            if (result.detailtemperatureAVG) {
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 온도 평균은 ${result.detailtemperatureAVG}℃ 입니다.`);
+                console.log("temperature");
+            }else if (result.detailhumidityAVG) {
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 습도 평균은 ${result.detailhumidityAVG}% 입니다.`);
+                console.log("humidity");
+            }else{
+                document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 사용량은 ${result.detailelectricitySUM}kW 이며, 예상 전력비용은 ${Math.round(result.detailelectricitySUM * 2.3)}원 입니다.`);
+                console.log("electricity");
+            }
+            return;
+        })
+        .catch((error) => {
+            return alert(error);
+        });
+    }
+</script>
+
+</html>

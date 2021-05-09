@@ -1,39 +1,41 @@
-// ref https://www.npmjs.com/package/dateformat
-const dateFormat = require('dateformat');
-const { AptDong, AptHo, Sensor, sequelize } = require('../../models');
-const messageController = require('../message/message.controller');
-const { Op } = require("sequelize");
+// const messageController = require('../message/message.controller');
+const query = require('./query.controller');
+const dateAndTime = require('date-and-time');
 
 
 
-exports.selectAll = async (req, res) => {
+exports.mainData = async (req, res) => {
     try {
-        let now = new Date();
-        let { 
-            year = dateFormat(now, 'yyyy'),
-            month = dateFormat(now, 'mm'),
-            day = dateFormat(now, 'd'),
-            time, temperature, electricity, humidity, roomType} = req.body;
-            const enddate = Number.parseInt(month) + 1;
-        const result = await Sensor.findAll({
-            where: {
-                created_at: {
-                    [Op.between]: [dateFormat(`${year}-${month}-01 00:00:00`, 'yyyy-mm-dd HH:MM:ss'), dateFormat(`${year}-${enddate}-01 00:00:00`, 'yyyy-mm-dd HH:MM:ss')],                 
-                    },
-            },
-            attributes: [
-                [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('humidity')), 2 ), 'humidityavg'],
-                [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('temperature')), 2 ), 'temperatureavg'],
-                [sequelize.fn('ROUND', sequelize.fn('AVG', sequelize.col('electricity')), 2 ), 'electricityavg'],
-            ],
-            order: [['created_at', 'DESC']]
-        });
-        result.map(Sensor => {
-            console.log(Sensor.dataValues);
-            res.json({Sensor});
-        });
+        let result = {};
+        result.hour = {};
+        result.day = {};
+        result.month = {};
         
+        // 시간 평균
+        result.hour.humidity = await query.hourQuery("humidity", "AVG");
+        result.hour.temperature = await query.hourQuery("temperature", "AVG");
+        result.hour.electricity = await query.hourQuery("electricity", "SUM");
+        // 하루 평균
+        result.day.humidity = await query.dayQuery("humidity", "AVG");
+        result.day.temperature = await query.dayQuery("temperature", "AVG");
+        result.day.electricity = await query.dayQuery("electricity", "SUM");
+        // 월 평균
+        result.month.humidity = await query.monthQuery("humidity", "AVG");
+        result.month.temperature = await query.monthQuery("temperature", "AVG");
+        result.month.electricity = await query.monthQuery("electricity", "SUM");
+        
+        res.json(result);
     } catch (error) {
         console.log(error);
+    }
+}
+exports.detailData = async (req, res) => {
+    // 달력 눌러서
+    const { startfilter, endfilter, calculateType, dataType } = req.body.data;
+    try {
+        const result = await query.detailQuery(startfilter, endfilter, calculateType, dataType);
+        res.json(result)
+    } catch (error) {
+        console.error(error);
     }
 }

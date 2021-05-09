@@ -10,10 +10,18 @@ info:
 tags:
   - name: common
     description: 공통 기능
+  - name: login
+    description: 로그인 페이지
+  - name: auth
+    description: 로그인 기능 및 회원 정보
+  - name: chart
+    description: 차트페이지
   - name: message
     description: 카카오 메시지 전송 기능
   - name: sensor
     description: 센서 정보
+  - name: api
+    description: 외부 연계 api
 paths:
   /common/alive/server:
     head:
@@ -26,6 +34,98 @@ paths:
       responses:
         '204':
           description: Alive Server
+  /:
+    get:
+      tags:
+      - login
+      summary: redirect /login
+      description: |
+        로그인 페이지로 렌더링
+      responses:
+        "204":
+          description: redirect login page
+  /login:
+    get:
+      tags:
+      - login
+      summary: login page render
+      description: |
+        로그인 페이지 렌더링
+      responses:
+        "204":
+          description: login page
+  /auth/kakao:
+    get:
+      tags:
+        - auth
+      summary: kakao login api request
+      description: |
+        카카오 로그인 요청
+      response:
+        "200":
+          description: 로그인 성공시 /auth/kakao/callback
+  /auth/kakao/callback:
+    get:
+      tags:
+        - auth
+      summary: kakao login callback
+      description: |
+        카카오 로그인 콜백
+        단지, 동, 호에  대한 데이터가 있다면 /chart 없다면 /auth/userinfo
+      response:
+        "200":
+          description: 단지, 동, 호에  대한 데이터가 있다면 /chart 없다면 /auth/userinfo
+        "401":
+          description: 권한 설정 부족 또는 카카오 로그인 권한 없음
+  /auth/userinfo:
+    get:
+      tags:
+        - auth
+      summary: userinfo insert page
+      description:
+        유저에 대한 단지, 동, 호 입력 페이지
+      response:
+        "200":
+          description: 입력 페이지 로딩
+    patch:
+      tags:
+        - auth
+      summary: userinfo insert
+      description:
+        유저가 입력한 단지, 동, 호 업데이트
+      response:
+        "200":
+          description: 업데이트 성공
+        "500":
+          description: 업데이트 실패
+  /chart:
+    get:
+      tags:
+        - chart
+      summary: chart page
+      description: 차트 메인 페이지
+      response:
+        "200":
+          description: 차트 메인 페이지 로딩 성공
+        "404":
+          description: 페이지 로드 실패
+  /chart/detail:
+    get:
+      tags:
+        - chart
+      summary: chart detail page
+      description: 차트 상세 페이지
+      parameters:
+      - name: dataType
+        in: path
+        description: 온도, 습도, 전력에 대한 선택
+        required: true
+        type: string
+      response:
+        "200":
+          description: 차트 상세 페이지 로딩 성공
+        "404":
+          description: 페이지 로드 실패
   /message/send:
     post:
       tags:
@@ -38,10 +138,21 @@ paths:
         '204':
           description: Success Send Message
   /sensor/data:
+    get:
+      tags:
+        - sensor
+      summary: chart main page data
+      description: |
+        차트에 대한 온도, 습도 평균 및 총 전력 사용량
+        카카오 로그인 필수 및 아파트 단지, 동, 호 필수
+      responses:
+        '204':
+          description: success
+  /sensor/data/detail:
     post:
       tags:
         - sensor
-      summary: check sensor data
+      summary: chart main page data
       requestBody:
         required: true
         content:
@@ -49,17 +160,31 @@ paths:
             schema:
               type: object
               properties:
-                complex:
+                startdate:
                   type: string
-                dong:
+                enddate:
                   type: string
-                ho:
-                  type: string
-                timeValue:
-                  type: string
-      operationId: alive
       description: |
-        해당 서비스가 작동여부 확인
+        선택한 기간에 대한 정보를 볼 수 있는 페이지
+        카카오 로그인 필수 및 아파트 단지, 동, 호 필수
       responses:
         '204':
-          description: Alive Server
+          description: success
+  /api/weather/{city}:
+    get:
+      tags:
+        - api
+      summary: 날씨 정보 조회
+      description: |
+        날씨 정보 조회
+      parameters:
+        - name: city
+          in: path
+          description: 도시 이름
+          required: true
+          type: string
+      responses:
+        "200":
+          description: success
+        "500":
+          description: server error

@@ -12,18 +12,16 @@ describe("Mqtt Test", () => {
             
             setInterval(() => {
                 const data = {
-                    number: 101,
-                    roomType: "small",
+                    aptComplex: "1단지", // 아파트 단지
+                    aptDong: "101동", // 아파트 동
+                    number: "101호", // 아파트 호수
                     temperature: rand(18, 38),
                     humidity: rand(30, 50),
-                    watt: rand(300, 400),
-                    roomtype: "small",
+                    watt: rand(1, 2)/10,
                 }
                 // console.log(`send data = ${JSON.stringify(data)}`)
                 mqttClient.publish("sadang/data", JSON.stringify(data));
-            }, 3000)
-            
-
+            }, 2000)
             
         } catch (e) {
             console.log(e)

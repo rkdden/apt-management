@@ -10,7 +10,8 @@ development:
     protocol: "mqtt"
     host: "mqtt-dashboard.com"
     topic: "sadang/data"
-  # 데이터베이스
+  api:
+    openweathermap: e402fac442675f72e35dff845ffc4e09
   db:
     username: "rkdden"
     password: "1234"
@@ -25,7 +26,8 @@ production:
     protocol: "mqtt"
     host: "mqtt-dashboard.com"
     topic: "sadang/data"
-  # 데이터베이스
+  api:
+    openweathermap: e402fac442675f72e35dff845ffc4e09
   db:
     username: "root"
     password: "데이터베이스 비밀번호"

@@ -11,7 +11,7 @@ const commConfig = yaml.load(fs.readFileSync(path.join(__dirname, "..", "config"
 const config = commConfig[process.env.NODE_ENV || "development"];
 const ip = internalIp.v4.sync();
 const port = config.comm.nodePort || 3000;
-
+require('../service/email/index');
 
 const assertDatabaseConnectionOK = async () => {
     // 시퀄라이즈 설정

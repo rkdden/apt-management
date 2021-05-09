@@ -35,6 +35,6 @@ module.exports = class Sensor extends Sequelize.Model {
         });
     }
     static associate(db) {
-        db.Sensor.belongsTo(db.AptHo)// aptHo 1 : N : Sensor
+        db.Sensor.belongsTo(db.AptHo, {foreignKey: 'apt_ho'})// aptHo 1 : N : Sensor
     }
 };

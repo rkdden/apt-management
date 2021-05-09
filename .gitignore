@@ -442,3 +442,6 @@ dist
 
 # vscode 환경설정
 .vscode
+
+# 기타 폴더
+/data
