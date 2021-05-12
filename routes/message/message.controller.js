@@ -1,17 +1,18 @@
 const logger = require('../../config/winston')('message.controller');
 const axios = require('axios');
+const weather = require('../api/weather.controller');
 
 module.exports = {
-    sendMessage (req, res, param) {
+    async sendMessage (req, res, param) {
         //const messageTitle = req.result.Sensor.sensoravg;
         
        // 텍스트 메시지 형식
         const template_objectObj = {
             "object_type": 'text',
-            "text": `현재 정보 입니다.`,
+            "text": `사용량 메시지 입니다.\n현재 날씨: ${await weather.getWeatherInCity('korea')}°C`,
             'link': {
-            web_url: 'https://stackoverflow.com/questions/31186241/node-js-request-invalid-uri',
-            mobile_web_url: 'https://stackoverflow.com/questions/31186241/node-js-request-invalid-uri'
+            web_url: 'http://localhost:3000/chart',
+            mobile_web_url: 'http://localhost:3000/chart'
             }
         };
     
