@@ -4,6 +4,7 @@ const saveChart = require("./drawLine");
 const apt_Info = require('./emailService');
 const dateAndTime = require('date-and-time');
 const { User, AptHo, AptDong } = require('../../models');
+const logger = require('../../config/winston')('emailIndex');
 
 
 exports.emailSchedule = () => {
@@ -46,10 +47,12 @@ exports.emailSchedule = () => {
       tempChart(fileName, tempArray, dateArray);
       wattChart(fileName, wattArray, dateArray);
     };
-  };
-  
-  // 아파트 모든 세대의 전력 차트 그리기
-  const wattChart = (fileName, data, date) => {
+    console.log("차트 그리기 시작");
+    logger.info('create chart');
+};
+
+// 아파트 모든 세대의 전력 차트 그리기
+const wattChart = (fileName, data, date) => {
     const filewatt = fileName + "watt.png";
     saveChart(filewatt, "Watt", data, date);
   };
@@ -69,16 +72,14 @@ exports.emailSchedule = () => {
   //차트그리기 스케줄러
   const drawChart = () => {
     // 매달 자정에 파일 생성
-    const jobs = schedule.scheduleJob('13 15 04 * *', function() {
-      console.log("차트 그리기 시작");
-      basename();
+    const jobs = schedule.scheduleJob('0 0 01 * *', function() {
+        basename();
     });
-  };
-  
-  
-  // 이메일 보내기 스케줄러 시간 지정 
-  // 수정 해야됨!!!!!!!!!!
-  const mailResult = async () => {
+};
+
+
+// 이메일 보내기 스케줄러 시간 지정 
+const mailResult = async () => {
     const userinfo = await User.findAll({
       attributes: ['uemail', 'apt_ho'],
       include: {
@@ -89,20 +90,21 @@ exports.emailSchedule = () => {
       },
     });
     userinfo.map((user) => {
-      let emailParam = {
-        toEmail: `${user.uemail}`,
-        subject: `${get_month() -1}월 사용량입니다.`,
-        text: `${get_month() - 1}월 사용량입니다.`,
-        // ex)1단지101동101호
-        name: `${user.AptHo.AptDong.apt_complex}${user.AptHo.AptDong.apt_dong}${user.AptHo.apt_ho}`,
-        month: get_month() - 1,
-      };
-      
-      // 매달 1일 0시 1분 이메일 보내기 실행
-      const j = schedule.scheduleJob('14 15 04 * *', function() {
-        console.log("Run mail");
-        mailSender.sendGmail(emailParam);
-      });
+        let emailParam = {
+            toEmail: `${user.uemail}`,
+            subject: `${get_month() -1}월 사용량입니다.`,
+            text: `${get_month() - 1}월 사용량입니다.`,
+            // ex)1단지101동101호
+            name: `${user.AptHo.AptDong.apt_complex}${user.AptHo.AptDong.apt_dong}${user.AptHo.apt_ho}`,
+            month: get_month() - 1,
+        };
+
+        // 매달 1일 0시 15분 이메일 보내기 실행
+        const j = schedule.scheduleJob('15 0 01 * *', function() {
+            console.log("send mail");
+            logger.info('send mail');
+            mailSender.sendGmail(emailParam);
+        });
     });
   };
   

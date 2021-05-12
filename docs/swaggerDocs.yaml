@@ -20,6 +20,8 @@ tags:
     description: 카카오 메시지 전송 기능
   - name: sensor
     description: 센서 정보
+  - name: api
+    description: 외부 연계 api
 paths:
   /common/alive/server:
     head:
@@ -71,7 +73,7 @@ paths:
         카카오 로그인 콜백
         단지, 동, 호에  대한 데이터가 있다면 /chart 없다면 /auth/userinfo
       response:
-        "200": 
+        "200":
           description: 단지, 동, 호에  대한 데이터가 있다면 /chart 없다면 /auth/userinfo
         "401":
           description: 권한 설정 부족 또는 카카오 로그인 권한 없음
@@ -83,7 +85,7 @@ paths:
       description:
         유저에 대한 단지, 동, 호 입력 페이지
       response:
-        "200": 
+        "200":
           description: 입력 페이지 로딩
     patch:
       tags:
@@ -92,7 +94,7 @@ paths:
       description:
         유저가 입력한 단지, 동, 호 업데이트
       response:
-        "200": 
+        "200":
           description: 업데이트 성공
         "500":
           description: 업데이트 실패
@@ -103,7 +105,7 @@ paths:
       summary: chart page
       description: 차트 메인 페이지
       response:
-        "200": 
+        "200":
           description: 차트 메인 페이지 로딩 성공
         "404":
           description: 페이지 로드 실패
@@ -168,3 +170,21 @@ paths:
       responses:
         '204':
           description: success
+  /api/weather/{city}:
+    get:
+      tags:
+        - api
+      summary: 날씨 정보 조회
+      description: |
+        날씨 정보 조회
+      parameters:
+        - name: city
+          in: path
+          description: 도시 이름
+          required: true
+          type: string
+      responses:
+        "200":
+          description: success
+        "500":
+          description: server error

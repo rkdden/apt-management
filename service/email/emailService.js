@@ -2,8 +2,7 @@ const dateAndTime = require('date-and-time');
 const { AptDong, AptHo, Sensor, sequelize } = require('../../models');
 const { Op } = require("sequelize");
 
-const now = new Date('2021-05-01 00:00:00'); // 여기서 날짜는 저시간에 실행됬다는 가정임
-// 날짜 파싱
+const now = new Date();
 
 // 매달 1일 0시 0분 0초 return
 const startDate = (data) => {

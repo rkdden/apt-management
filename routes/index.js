@@ -6,6 +6,7 @@ const authRouter = require('./auth/index');
 const sensorRouter = require('./sensor/index');
 const messageRouter = require('./message/index');
 const chartRouter = require('./chart/index');
+const apiRouter = require('./api/index');
 
 // /로 접속시 /login으로 보냄
 // 완료
@@ -24,8 +25,10 @@ router.use('/auth', authRouter);
 router.use('/chart', chartRouter);
 // 완료
 router.use('/message', messageRouter);
-// 
+//
 router.use('/sensor', sensorRouter);
+
+router.use('/api', apiRouter);
 
 
 module.exports = router;
