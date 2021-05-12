@@ -1,4 +1,6 @@
+const logger = require('../../config/winston')('auth.controller');
 const { AptDong, AptHo, User, sequelize } = require('../../models');
+
 
 exports.getUserInfo = async (req, res) => {
     try {
@@ -26,7 +28,7 @@ exports.getUserInfo = async (req, res) => {
         
         res.render('./userinfo.html', {aptComplex, aptDong, aptHo});
     } catch (error) {
-        console.error(error);
+        logger.error(error);
     }
 }
 
@@ -57,6 +59,6 @@ exports.patchUserInfo = async (req, res) => {
             return res.json({success: false});
         }
     } catch (error) {
-        console.error(error);
+        logger.error(error);
     }
 }

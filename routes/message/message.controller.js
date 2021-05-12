@@ -18,16 +18,18 @@ module.exports = {
         // Javascript -> JSON 타입으로 변경
         const template_objectStr = JSON.stringify(template_objectObj);
     
-        // axios 로 요청보냄
-        const accessToken = `Bearer ${req.user.accessToken}`;
+        //axios 로 요청보냄
+        //const accessToken = `Bearer ${req.user.accessToken}`;
         
         axios.post('https://kapi.kakao.com/v2/api/talk/memo/default/send', `template_object= ${template_objectStr}`, {
                 headers: {
-                    Authorization: accessToken,
+                    Authorization: `Bearer ${req.user.accessToken}`,
                 }, 
             })
             .then((response)=> {
-                logger.info(response.data.result_code);
+                if(response.status === 403){
+                  console.log("_-----------------403입니다.")
+                }
                 if(response.data.result_code !== 0) {
                     return res.status(400).send('전송 실패');
                 }else {
@@ -35,7 +37,7 @@ module.exports = {
                 }
             })
             .catch((error) => {
-                return console.log(error);
+                return logger.error(error);  
             }); 
     }
 };

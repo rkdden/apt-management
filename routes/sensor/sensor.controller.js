@@ -1,4 +1,4 @@
-// const messageController = require('../message/message.controller');
+const logger = require('../../config/winston')('sensor.controller');
 const query = require('./query.controller');
 const dateAndTime = require('date-and-time');
 
@@ -26,7 +26,7 @@ exports.mainData = async (req, res) => {
         
         res.json(result);
     } catch (error) {
-        console.log(error);
+        logger.log(error);
     }
 }
 exports.detailData = async (req, res) => {
@@ -36,6 +36,6 @@ exports.detailData = async (req, res) => {
         const result = await query.detailQuery(startfilter, endfilter, calculateType, dataType);
         res.json(result)
     } catch (error) {
-        console.error(error);
+        logger.error(error);
     }
 }

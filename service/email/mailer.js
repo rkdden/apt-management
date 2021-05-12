@@ -40,7 +40,6 @@ const mailSender = {
 			}
 		});
 	},
-
 };
 
 module.exports = mailSender;

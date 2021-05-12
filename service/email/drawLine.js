@@ -34,10 +34,10 @@ const saveChart = async (filename, type, data, date) => {
 
     // 월별 / 데이터별 파일 구분하기
 	const folderName = './data/' + (get_Month() - 1);
-    const monthPath = folderName + '/' + type;
+  const monthPath = folderName + '/' + type;
 	// Write file to disk
 	makeFolder(folderName);
-    makeFolder(monthPath);
+  makeFolder(monthPath);
 	await chart.toFile(monthPath + "/" +  filename);
 }
 

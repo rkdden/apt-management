@@ -11,11 +11,11 @@ const commConfig = yaml.load(fs.readFileSync(path.join(__dirname, "..", "config"
 const config = commConfig[process.env.NODE_ENV || "development"];
 const ip = internalIp.v4.sync();
 const port = config.comm.nodePort || 3000;
-require('../service/email/index');
+const email = require('../service/email');
 
 const assertDatabaseConnectionOK = async () => {
     // 시퀄라이즈 설정
-    sequelize.sync({force: false})
+    sequelize.sync({force: true})
     .then(() => {
         console.log('데이터베이스 연결 성공');
     })
@@ -40,6 +40,7 @@ const initialize = async () => {
     await assertDatabaseConnectionOK();
     await getCommonInformation();
     await mqttMessage();
+    await email.emailSchedule();
 };
 
 const getCommonInformation = () => {
