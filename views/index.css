@@ -1,3 +1,18 @@
+body {
+    margin: 0 auto;
+}
+
+.wrapper {
+    margin: 0 auto;
+}
+
+.button {
+    display: block;
+    width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
 .label {
     display: inline-block;
     text-align: right;
@@ -15,12 +30,14 @@
 }
 
 .myChart {
+    margin: 0 auto;
     width: 1000px;
     display: flex;
 
 }
 
 .barChart {
+    margin: 0 auto;
     width: 1000px;
     height: 500px;
 }

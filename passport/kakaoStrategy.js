@@ -9,6 +9,7 @@ module.exports = () => {
         callbackURL: "http://localhost:3000/auth/kakao/callback", // 카카오 콜백 URL
     }, async (accessToken, refreshToken, profile, done) => {
         try {
+            console.log(profile);
             const exUser = await User.findOne({
                 where: { uemail: profile._json.kakao_account.email },
             });

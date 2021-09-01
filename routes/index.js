@@ -7,8 +7,6 @@ const sensorRouter = require('./sensor/index');
 const messageRouter = require('./message/index');
 const chartRouter = require('./chart/index');
 
-// /로 접속시 /login으로 보냄
-// 완료
 router.get('/', (req, res) => {
     res.redirect('/login');
 });

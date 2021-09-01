@@ -60,10 +60,8 @@
         const div = document.createElement('div');
         let calculateType = "";
         if (dataType === "temperature" || dataType === "humidity") {
-            // 누른 데이터가 온도 또는 습도이면
             calculateType = "AVG";
         }else{
-            // 누른 데이터가 전력량이면
             calculateType = "SUM";
         }
         axios.post('/sensor/data/detail', {
@@ -75,9 +73,6 @@
             }
         })
         .then((response) => {
-            // 모듈로 받아온 데이터 넘기기
-            // return bar(response.data);
-            // 여기부터
             let result = response.data[0];
             if (result.detailtemperatureAVG) {
                 document.getElementById('result').append(div,`${startfilter} 부터 ${endfilter} 까지의 온도 평균은 ${result.detailtemperatureAVG}℃ 입니다.`);
