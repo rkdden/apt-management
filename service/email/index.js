@@ -96,10 +96,16 @@ const mailResult = async () => {
             name: `${user.AptHo.AptDong.apt_complex}${user.AptHo.AptDong.apt_dong}${user.AptHo.apt_ho}`,
             month: get_month() - 1,
         };
+        
+        // const rule = new schedule.RecurrenceRule();
+        // const m = 50;
+        // rule.minute = m;
 
         // 매달 1일 0시 15분 이메일 보내기 실행
         const j = schedule.scheduleJob('15 0 01 * *', function() {
+        // const j = schedule.scheduleJob(rule, async function() {
             console.log("send mail");
+            // await basename();
             logger.info('send mail');
             mailSender.sendGmail(emailParam);
         });

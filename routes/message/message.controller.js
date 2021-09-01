@@ -27,14 +27,16 @@ module.exports = {
                 }, 
             })
             .then((response)=> {
-                logger.info(response.data.result_code);
                 if(response.data.result_code !== 0) {
+                    logger.info("전송 실패");
                     return res.status(400).send('전송 실패');
                 }else {
+                    logger.info('전송 성공')
                     return res.status(204).send('ok');
                 }
             })
             .catch((error) => {
+                logger.error("카카오톡 에러" + error);
                 return console.log(error);
             }); 
     }
